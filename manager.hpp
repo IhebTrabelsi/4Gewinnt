@@ -42,6 +42,11 @@ public:
 	void insertStein(quint8 x);
 	
 	/**
+     *  @brief setzt stein in Gitter und gibt y-Wert zurück
+     **/
+	quint8 setzeStein(quint8 x);
+	
+	/**
      *  @brief verarbeitet generischen Zug
      **/
 	void checkZug(quint8 x);
@@ -54,7 +59,7 @@ public:
 	/**
      *  @brief prüft ob Zug die Runde gewinnt
      **/
-	stein checkWin(quint8 x, quint8 y);
+	bool checkWin(quint8 x, quint8 y);
 	
 	/**
      *  @brief prüft ob Zug zu Unetschieden führt
@@ -66,6 +71,11 @@ public:
      **/
 	void nextRound();
 	
+	/**
+     *  @brief Zugwechsel
+     **/
+	void nextZug();
+	
 	
 private:
 		quint8  _zeilen =7;
@@ -76,7 +86,15 @@ private:
 		qstring _IPadresse;
 		qstring _port;
 		bool    _gameRunning;
-		Spiel*  _spiel
+		Spiel*  _spiel =nullptr;
+		MyStream *_gameChat;
+		MyStream *_player1Chat;
+		MyStream *_player2Chat;
+		
+		
+signals:
+		signalClose();
+		network();
 };
 
 
