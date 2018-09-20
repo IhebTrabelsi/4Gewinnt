@@ -19,18 +19,17 @@ public:
 signals:
     
 public slots:
-    /**
-     * @brief is called when a player enters the game and Closes the server after it
-     */
-    void newConnection();
+    //use this functions
     void disconnectTheClient();
-    void toggleAcceptingConnections();
-    void closeServer();
-    void disconnected();
-    void socketError();
+    void openServer();
+    void disconnectTheServer();
     void sendZug(qint8 x);
     void sendParameters(qint64 parameter);
     void processRecievedInformation();
+    // don't use this functions
+    void closeServer();
+    void newConnection();
+    void disconnected();
 
 private:
     QTcpServer *_myserver;

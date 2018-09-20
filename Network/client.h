@@ -7,14 +7,16 @@
 #include <cassert>
 #include <QDebug>
 
+
 class Client : public QObject
 {
     Q_OBJECT
 public:
     Client(QString Adress, quint16 Port, QObject *parent=nullptr);
 signals:
-
+    void clientIsConnected();
 public slots:
+    // you can call these functions
     void connectToServer();
 
     void sendParameters(qint64 parameter);
@@ -23,13 +25,11 @@ public slots:
 
     void sendZug(qint8 x);
 
+    void disconnectFromServer();
+    //don't call these functions these are class intern
     void enableConnection();
 
     void disconnected();
-
-    void socketError();
-
-    void disconnectFromServer();
 
 private:
     QDataStream _mystream;
