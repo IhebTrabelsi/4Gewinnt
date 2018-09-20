@@ -16,15 +16,6 @@ void MyTcpServer::openServer()
         qDebug() << "Server could not start";
     }
     else{
-
-
-
-
-
-
-
-
-
         qDebug() << "Server started!";
         qDebug() << _myserver->serverAddress();
         qDebug() << _myserver->serverPort();
