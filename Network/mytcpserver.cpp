@@ -1,11 +1,9 @@
 #include "mytcpserver.h"
-
 MyTcpServer::MyTcpServer(quint16 Port, QObject *parent) :
     QObject(parent), _Port(Port)
 {
 openServer();
 }
-
 void MyTcpServer::openServer()
 {
     _myserver = new QTcpServer(this);
@@ -13,13 +11,20 @@ void MyTcpServer::openServer()
     // whenever a user connects, it will emit signal
     connect(_myserver, SIGNAL(newConnection()),
             this, SLOT(newConnection()));
-
     if(!_myserver->listen(QHostAddress::Any, _Port))
     {
         qDebug() << "Server could not start";
     }
-    else
-    {
+    else{
+
+
+
+
+
+
+
+
+
         qDebug() << "Server started!";
         qDebug() << _myserver->serverAddress();
         qDebug() << _myserver->serverPort();

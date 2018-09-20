@@ -28,8 +28,8 @@ public:
     ~Manager();
 	
 	void spielStart();
-	void setServerClient (bool serverOrClient);
-	void handleEvent();
+	void setServerClient (bool serverOrClient ,qstring port = " " ,qstring IP = " ");
+	void handleEvent(quint32 netcode);
 	
 	/**
      *  @brief beendet das Spiel
@@ -40,6 +40,11 @@ public:
      *  @brief verarbeitet zug des Spielers
      **/
 	void insertStein(quint8 x);
+	
+	/**
+     *  @brief setzt stein in Gitter und gibt y-Wert zurück
+     **/
+	quint8 setzeStein(quint8 x);
 	
 	/**
      *  @brief verarbeitet generischen Zug
@@ -54,7 +59,7 @@ public:
 	/**
      *  @brief prüft ob Zug die Runde gewinnt
      **/
-	stein checkWin(quint8 x, quint8 y);
+	bool checkWin(quint8 x, quint8 y);
 	
 	/**
      *  @brief prüft ob Zug zu Unetschieden führt
@@ -66,6 +71,11 @@ public:
      **/
 	void nextRound();
 	
+	/**
+     *  @brief Zugwechsel
+     **/
+	void nextZug();
+	
 	
 private:
 		quint8  _zeilen =7;
@@ -76,13 +86,22 @@ private:
 		qstring _IPadresse;
 		qstring _port;
 		bool    _gameRunning;
-		Spiel*  _spiel
+		Spiel*  _spiel =nullptr;
+		MyStream *_gameChat;
+		MyStream *_player1Chat;
+		MyStream *_player2Chat;
+		
+		
+signals:
+		signalClose();
+		network();
 };
 
 
 /**
  *  @brief Spiel stellt den Spielstand dar
  */
+template<size_t X_size, size_t Y_size>
 class Spiel {
     Q_OBJECT
 
@@ -101,11 +120,11 @@ public:
 private:
 		quint8  	  _rundennummer =1;
 		stein   	  _currentPlayer;
-		stein[x][y]   _grid;
+		stein[X_size][Y_size]   _grid = {zero};
 		const quint8  _x;
 		const quint8  _y;
-		
-		
+		quint8  	  _gewonnenSpieler1 =0;
+		quint8  	  _gewonnenSpieler2 =0;
 };
 
 #endif
