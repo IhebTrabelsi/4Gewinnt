@@ -1,5 +1,5 @@
 #include "manager.hpp"
-
+#include <stdlib.h> 
 
 Manager::Manager(QApplication *parent) :
     QApplication(parent),
@@ -30,6 +30,91 @@ Manager::~Manager()
 
 
 
+void setServerClient (bool serverOrClient ,qstring port ,qstring IP){
+	if(serverOrClient){
+		v = rand() % 2 ; 
+		if( v==1){
+			_beginnender = true;
+		}
+		else{
+			_beginnender = false;
+		}
+		//XXX netzwerkbefahl
+	}
+	else{
+		//XXX netzwerkbefahl
+	}
+}
+
+
+
+void spielStart(){
+	if( _beginnender){
+		*_spiel = Spiel(player1);
+	}
+	else{
+		*_spiel = Spiel(player2);
+	}
+}
+
+
+
+void handleEvent(quint32 netcode){
+	quint8 code = netcode >>16;
+	switch code {
+		case 0x11 :
+			quint8 value = netcode;
+				switch value {
+					case 0x00 :
+						nextZug();
+						break;
+						
+					case 0x01 :
+						std::cout<<"Du hast gewonnen!"<<std::endl;
+						_spiel->_gewonnenSpieler1 ++;
+						nextZug();
+						nextRound();
+						break;
+						
+					case 0x02 :
+						std::cout<<"Unetschieden!"<<std::endl;						
+						nextRound();
+						break;
+						
+					case 0x10 :
+						std::cout<<"Du warst nicht an der Reihe!"<<std::endl;
+						break;
+						
+					case 0x11 :
+						std::cout<<"Außerhalb des Spielfeldes!"<<std::endl;
+						break;
+						
+					case 0x12 :
+						std::cout<<"Spalte ist voll!"<<std::endl;
+						break;
+						
+					case 0x13 :
+						std::cout<<"kein laufendes Spiel!"<<std::endl;
+						break;
+					
+					case 0x20 :
+						std::cout<<"Unbekannter Fehler aufgetreten!"<<std::endl;
+						break;
+				}
+			break;
+			
+		case 0x03 :
+			quint8 x = netcode;
+			checkZug(x);
+			break;
+			
+		case 0xXXX :
+			std::cout<<"Gegener ist beigetreten."<<std::endl;
+			break;
+	}
+}
+
+
 
 void quit(){
 	if(_gameRunning){
@@ -47,13 +132,19 @@ void quit(){
 
 
 void insertStein(quint8 x){
-	if(! checkValid(x))break;
+	if(_spiel->_currentPlayer == player1 && _gameRunning){
+		if(! checkValid(x))break;
 		
-	quint8 y = setzeStein(x);
-	//emit signal an netzwerk(x);
-	if(checkWin(x, y)){
-		std::cout<<"Du hast gewonnen!"<<std::endl;
-		nextRound();
+		quint8 y = setzeStein(x);
+		quint32 out = 0x00030100 + x ;
+		emit network(out);
+		if(checkWin(x, y)){
+			std::cout<<"Du hast gewonnen!"<<std::endl;
+			nextRound();
+		}
+	}
+	else{
+		std::cout<<"Du bist nicht am Zug!"<<std::endl;
 	}
 }
 
@@ -84,13 +175,16 @@ void checkZug(quint8 x){
 		if(checkDraw()){
 			quint32 out = 0x00110102;
 			std::cout<<"Unentschieden!"<<std::endl;
+			nextRound();
 		}
 		else if(checkWin(x ,y )){
 			quint32 out = 0x00110101;
 			std::cout<<"Du hast verlohren!"<<std::endl;
+			_spiel->_gewonnenSpieler2 ++;
 		}
 		else{
 			quint32 out = 0x00110100;
+			nextZug();
 		}
 		emit network(out);
 		
@@ -172,8 +266,8 @@ bool checkWin(quint8 x, quint8 y){
 
 bool checkDraw(){
 	quint8 count = 0;
-	for(i=0, i< __spiel->_x ,i++){
-		if(__spiel->_spiel->_grid[i][0] != zero)
+	for(i=0, i< _spiel->_x ,i++){
+		if(_spiel->_grid[i][0] != zero)
 			count++
 	}
 	if(count < (__spiel->_x -2)) return true;
@@ -184,5 +278,19 @@ bool checkDraw(){
 
 
 void nextZug(){
-	
+	if(_spiel->_currentPlayer == player1){
+		_spiel->_currentPlayer = player2;
+		std::cout<<"Dein Gegner ist jetzt am Zug."<<std::endl;
+	}
+	else{
+		_spiel->_currentPlayer = player1;
+		std::cout<<"Du bist jetzt am Zug."<<std::endl;
+	}
 }
+
+Spiel::Spiel(stein startPlayer )
+:_currentPlayer(startPlayer)
+{
+
+}
+

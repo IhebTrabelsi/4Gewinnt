@@ -16,6 +16,10 @@ MyTcpServer::MyTcpServer(quint16 Port, QObject *parent) :
     }
     else
     {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2934a6b94e7abc94319bd9ee4fa02d37639c23aa
         qDebug() << "Server started!";
         qDebug() << _myserver->serverAddress();
         qDebug() << _myserver->serverPort();

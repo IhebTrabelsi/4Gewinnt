@@ -28,8 +28,8 @@ public:
     ~Manager();
 	
 	void spielStart();
-	void setServerClient (bool serverOrClient);
-	void handleEvent();
+	void setServerClient (bool serverOrClient ,qstring port = " " ,qstring IP = " ");
+	void handleEvent(quint32 netcode);
 	
 	/**
      *  @brief beendet das Spiel
@@ -101,6 +101,7 @@ signals:
 /**
  *  @brief Spiel stellt den Spielstand dar
  */
+template<size_t X_size, size_t Y_size>
 class Spiel {
     Q_OBJECT
 
@@ -119,11 +120,11 @@ public:
 private:
 		quint8  	  _rundennummer =1;
 		stein   	  _currentPlayer;
-		stein[x][y]   _grid;
+		stein[X_size][Y_size]   _grid = {zero};
 		const quint8  _x;
 		const quint8  _y;
-		
-		
+		quint8  	  _gewonnenSpieler1 =0;
+		quint8  	  _gewonnenSpieler2 =0;
 };
 
 #endif
