@@ -10,10 +10,12 @@
 #include "mytcpserver.h"
 #include "client.h"
 
+
 /**
  * @file manager.hpp Header file für Manager Klasse
  * @author Simon Näther
  **/
+
 
 /**
  *  @brief Manager stellt die oberste Logikebene dar
