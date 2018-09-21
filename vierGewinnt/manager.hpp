@@ -1,22 +1,24 @@
+#ifndef MANAGER_HPP
+#define MANAGER_HPP
+
+#include <QObject>
+#include <QWidget>
+#include <memory>
+#include <array>
+#include <iostream>
+#include "spiel.hpp"
+#include "mytcpserver.h"
+#include "client.h"
+
 /**
  * @file manager.hpp Header file für Manager Klasse
  * @author Simon Näther
  **/
- 
- 
-#ifndef MANAGER_HPP
-#define MANAGER_HPP
-#include <QWidget>
-#include <QApplication>
-#include <memory>
-#include <array>
-
-enum class stein : char { Player1 , Player2 , zero };
 
 /**
  *  @brief Manager stellt die oberste Logikebene dar
  */
-class Manager : public QApplication {
+class Manager: public QObject {
     Q_OBJECT
 
 public:
@@ -24,12 +26,24 @@ public:
      *  @brief Manager Konstruktor und Destruktor
      *
      **/
-    explicit Manager(QApplication * parent = nullptr);
+    explicit Manager(QWidget *parent = 0);
     ~Manager();
 	
 	void spielStart();
-	void setServerClient (bool serverOrClient ,qstring port = " " ,qstring IP = " ");
-	void handleEvent(quint32 netcode);
+    void setServerClient (bool serverOrClient ,quint16 port = 0 ,QString IP = " ");
+
+    /**
+     *  @brief bearbeitet anfrage eines Clients
+     **/
+    void serverRequested(void);
+
+    /**
+     *  @brief bearbeitet vom Server gesandete Spielparameter
+     **/
+    void clientResieved(void);
+
+
+    void handleEvent(quint8 code, quint8 value);
 	
 	/**
      *  @brief beendet das Spiel
@@ -67,7 +81,7 @@ public:
 	bool checkDraw();
 	
 	/**
-     *  @brief beendet das Spiel
+     *  @brief beendet die Runde
      **/
 	void nextRound();
 	
@@ -83,48 +97,24 @@ private:
 		quint8  _rundenzahl = 3;
 		bool    _beginnender;
 		bool    _serverOrClient;
-		qstring _IPadresse;
-		qstring _port;
+        QString _IPadresse;
+        QString _port;
 		bool    _gameRunning;
-		Spiel*  _spiel =nullptr;
-		MyStream *_gameChat;
-		MyStream *_player1Chat;
-		MyStream *_player2Chat;
+        Spiel*   _spiel;
+        Client* _client = nullptr;
+        MyTcpServer* _server = nullptr;
+
+//		MyStream *_gameChat;
+//		MyStream *_player1Chat;
+//		MyStream *_player2Chat;
 		
 		
 signals:
-		signalClose();
-		network();
+        //signalClose();
+        void network(quint8 , quint8, quint8);
+        void closeSignal();
+        void sendParameters(quint8, quint8, quint8, quint8, quint8, quint8);
 };
 
-
-/**
- *  @brief Spiel stellt den Spielstand dar
- */
-template<size_t X_size, size_t Y_size>
-class Spiel {
-    Q_OBJECT
-
-public:
-    /**
-     *  @brief Spiel Konstruktor und Destruktor
-     *
-     **/
-    explicit Spiel(quint8 x, quint8 y, stein beginnenderSpieler);
-    ~Spiel();
-	
-
-	
-	
-	
-private:
-		quint8  	  _rundennummer =1;
-		stein   	  _currentPlayer;
-		stein[X_size][Y_size]   _grid = {zero};
-		const quint8  _x;
-		const quint8  _y;
-		quint8  	  _gewonnenSpieler1 =0;
-		quint8  	  _gewonnenSpieler2 =0;
-};
 
 #endif

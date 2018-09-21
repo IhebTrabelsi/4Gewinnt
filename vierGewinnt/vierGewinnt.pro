@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets
+QT       += core gui widgets network
 
 TARGET = test4
 TEMPLATE = app
@@ -20,16 +20,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-CONFIG += c++11
+CONFIG += c++14
 
 SOURCES += \
         main.cpp \
         dialog.cpp \
     mainwindow.cpp \
     client.cpp \
-    main.cpp \
     manager.cpp \
-    mytcpserver.cpp
+    mytcpserver.cpp \
+    spiel.cpp
 
 HEADERS += \
         dialog.h \
@@ -38,7 +38,8 @@ HEADERS += \
     ../manager.hpp \
     client.h \
     manager.hpp \
-    mytcpserver.h
+    mytcpserver.h \
+    spiel.hpp
 
 FORMS += \
         dialog.ui \
