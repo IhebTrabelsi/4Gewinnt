@@ -25,11 +25,20 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         dialog.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    client.cpp \
+    main.cpp \
+    manager.cpp \
+    mytcpserver.cpp
 
 HEADERS += \
         dialog.h \
-    mainwindow.h
+    mainwindow.h \
+    dialog.h \
+    ../manager.hpp \
+    client.h \
+    manager.hpp \
+    mytcpserver.h
 
 FORMS += \
         dialog.ui \
