@@ -1,4 +1,4 @@
-#include "client.h"
+#include "client.h" 
 
 Client::Client(QString Adress, quint16 Port, QObject *parent)
     : QObject(parent), _Adress(Adress), _Port(Port)
