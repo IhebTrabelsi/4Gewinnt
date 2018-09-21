@@ -10,6 +10,7 @@
 #include <QApplication>
 #include <memory>
 #include <array>
+#include <QString>
 
 enum class stein : char { Player1 = 1 , Player2 = 2 , zero = 0};
 
@@ -28,7 +29,7 @@ public:
     ~Manager();
 	
 	void spielStart();
-	void setServerClient (bool serverOrClient ,qstring port = " " ,qstring IP = " ");
+	void setServerClient (bool serverOrClient ,QString port = " " ,QString IP = " ");
 	void handleEvent(quint32 netcode);
 	
 	/**
@@ -83,8 +84,8 @@ private:
 		quint8  _rundenzahl = 3;
 		bool    _beginnender;
 		bool    _serverOrClient;
-		qstring _IPadresse;
-		qstring _port;
+		QString _IPadresse;
+		QString _port;
 		bool    _gameRunning;
 		Spiel*  _spiel =nullptr;
 		MyStream *_gameChat;
