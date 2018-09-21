@@ -32,7 +32,7 @@ void MyTcpServer::newConnection()
     connect( _mysocket, SIGNAL(disconnected()),
              this, SLOT(disconnected()) );
     connect(_mysocket, SIGNAL(readyRead()), this, SLOT(processRecievedInformation()));
-    //sendZug(1);
+    sendParameters(0X123456);
 
 }
 
