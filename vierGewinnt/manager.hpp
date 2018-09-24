@@ -33,60 +33,47 @@ public:
 	
 	void spielStart();
     void setServerClient (bool serverOrClient ,quint16 port = 0 ,QString IP = " ");
-
     /**
      *  @brief bearbeitet anfrage eines Clients
      **/
     void serverRequested(void);
-
     /**
      *  @brief bearbeitet vom Server gesandete Spielparameter
      **/
-    void clientResieved(void);
-
-
+    void clientResieved(void); // Chedi Comment : received wird so geschrieben
     void handleEvent(quint8 code, quint8 value);
-	
 	/**
      *  @brief beendet das Spiel
      **/
 	void quit();
-	
 	/**
      *  @brief verarbeitet zug des Spielers
      **/
 	void insertStein(quint8 x);
-	
 	/**
      *  @brief setzt stein in Gitter und gibt y-Wert zurück
      **/
 	quint8 setzeStein(quint8 x);
-	
 	/**
      *  @brief verarbeitet generischen Zug
      **/
 	void checkZug(quint8 x);
-	
 	/**
      *  @brief prüft ob Zug erlaubt
      **/
 	bool checkValid(quint8 x);
-	
 	/**
      *  @brief prüft ob Zug die Runde gewinnt
      **/
 	bool checkWin(quint8 x, quint8 y);
-	
 	/**
      *  @brief prüft ob Zug zu Unetschieden führt
      **/
 	bool checkDraw();
-	
 	/**
      *  @brief beendet die Runde
      **/
-	void nextRound();
-	
+	void nextRound();	
 	/**
      *  @brief Zugwechsel
      **/
@@ -98,7 +85,7 @@ private:
 		quint8  _spalten = 7;
 		quint8  _rundenzahl = 3;
 		bool    _beginnender;
-		bool    _serverOrClient;
+        bool    _serverOrClient; // 0x00 Server / 0x01 Client
         QString _IPadresse;
         QString _port;
 		bool    _gameRunning;
