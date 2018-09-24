@@ -34,18 +34,14 @@ void Manager::setServerClient (bool serverOrClient ,quint16 port ,QString IP){
         int v = rand() % 2 ;
 		if( v==1){
             _beginnender = true;
-            MyTcpServer server(port);
-            _server = &server;
-		}
+            _server = new MyTcpServer(port);
 		else{
             _beginnender = false;
-            MyTcpServer server(port);
-            _server = &server;
+            _server = new MyTcpServer(port);
 		}
 	}
 	else{
-        Client client(IP , port);
-        _client = &client;
+        _client = new Client(IP , port);
 	}
 }
 
@@ -177,6 +173,7 @@ quint8 Manager::setzeStein(quint8 x){
     while(_spiel->_grid[x][count] == stein::zero) count++;
 	
 	_spiel->_grid[x][count] = _spiel->_currentPlayer;
+    //emit paint(x count, _spiel->_currentPlayer);
 	return count;
 }
 

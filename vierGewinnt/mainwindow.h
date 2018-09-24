@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 #include<QMainWindow>
 #include<dialog.h>
+#include "connector.hpp"
+
 namespace Ui {
 class MainWindow;
 }
@@ -13,6 +15,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+signals:
+    createServer(quint8);
+    createClient();
 
 private slots:
     void on_pushButton_clicked();
@@ -33,6 +38,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    Connector _connector(ui);
 
     Dialog *Game;
 };
