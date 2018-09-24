@@ -30,7 +30,9 @@ SOURCES += \
     manager.cpp \
     mytcpserver.cpp \
     spiel.cpp \
-    connector.cpp
+    connector.cpp \
+    gridcontainer.cpp \
+    stone.cpp
 
 HEADERS += \
         dialog.h \
@@ -41,7 +43,9 @@ HEADERS += \
     manager.hpp \
     mytcpserver.h \
     spiel.hpp \
-    connector.hpp
+    connector.hpp \
+    gridcontainer.h \
+    stone.h
 
 FORMS += \
         dialog.ui \

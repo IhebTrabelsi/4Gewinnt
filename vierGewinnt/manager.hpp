@@ -29,17 +29,20 @@ public:
      **/
     explicit Manager(QWidget *parent = 0);
     ~Manager();
-	
+
+public slots:
 	void spielStart();
     void setServerClient (bool serverOrClient ,quint16 port = 0 ,QString IP = " ");
     /**
      *  @brief bearbeitet anfrage eines Clients
      **/
     void serverRequested(void);
+
     /**
      *  @brief bearbeitet vom Server gesandete Spielparameter
      **/
-    void clientResieved(void); // Chedi Comment : received wird so geschrieben
+    void clientReceived(quint8 spalten, quint8 zeilen, quint8 rundenzahl, quint8 beginnender);
+
     void handleEvent(quint8 code, quint8 value);
 	/**
      *  @brief beendet das Spiel
@@ -102,6 +105,7 @@ signals:
         void network(quint8 , quint8, quint8);
         void closeSignal();
         void sendParameters(quint8, quint8, quint8, quint8, quint8, quint8);
+        //XXXpaint(quint8 x, quint8 y, stein spieler);
 };
 
 

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 #include<QMainWindow>
 #include<dialog.h>
+
 namespace Ui {
 class MainWindow;
 }
@@ -15,8 +16,10 @@ public:
     ~MainWindow();
 
 signals:
-    createServer(quint8);
-    createClient();
+    void createServer(bool server, quint16 port, QString ip);
+    void createClient();
+    void spieleStein (quint8 x);
+    void signalQuit();
 
 private slots:
     void on_pushButton_clicked();
@@ -36,7 +39,6 @@ private slots:
     void on_ButtonServer_clicked();
 
 private:  
-    Connector _connector(ui);
     Ui::MainWindow *ui;
     Dialog *Game;
     //---------------------COLUMN AND ROW NUMBER TO PASS-----------------

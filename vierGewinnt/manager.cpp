@@ -35,6 +35,7 @@ void Manager::setServerClient (bool serverOrClient ,quint16 port ,QString IP){
 		if( v==1){
             _beginnender = true;
             _server = new MyTcpServer(port);
+        }
 		else{
             _beginnender = false;
             _server = new MyTcpServer(port);
@@ -57,7 +58,17 @@ void Manager::serverRequested(void){
 
 
 
-void Manager::clientResieved(void){}
+void Manager::clientReceived(quint8 spalten, quint8 zeilen, quint8 rundenzahl, quint8 beginnender){
+    if(beginnender = 0x00)_beginnender= true;
+    else _beginnender =false;
+
+    _spalten = spalten;
+    _zeilen = zeilen;
+    _rundenzahl = rundenzahl;
+
+    emit network(0x10, 0x01, 0x00);
+    spielStart();
+}
 
 
 
@@ -173,7 +184,7 @@ quint8 Manager::setzeStein(quint8 x){
     while(_spiel->_grid[x][count] == stein::zero) count++;
 	
 	_spiel->_grid[x][count] = _spiel->_currentPlayer;
-    //emit paint(x count, _spiel->_currentPlayer);
+    //emit paint(x, count, _spiel->_currentPlayer);
 	return count;
 }
 

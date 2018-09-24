@@ -3,11 +3,19 @@
 
 
 
-Connector::Connector(Ui::MainWindow ui, QWidget *parent)
+Connector::Connector(QObject *parent)
     :QObject(parent)
 {
 
-connect(ui->ButtonClient, SIGNAL(clicked()), _manager, SLOT(setServerClient (false ,9999 ,"127.0.0.1")));
-connect(ui->ButtonServer, SIGNAL(clicked()), _manager, SLOT(setServerClient (true ,9999 ,"127.0.0.1")));
+//connect(_mainWindow, &MainWindow::createServer , _manager, [=]() {_manager.setServerClient();});
+connect(&_mainWindow, &MainWindow::createServer , &_manager, &Manager::setServerClient);
+connect(&_mainWindow, &MainWindow::createClient , &_manager, &Manager::setServerClient);
+connect(&_mainWindow, &MainWindow::spieleStein , &_manager, &Manager::insertStein);
+connect(&_mainWindow, &MainWindow::signalQuit , &_manager, &Manager::quit);
+//XXXconnect(&_manager, &Manager::paint , &_mainWindow, &MainWindow::paint);
+
+//connect(&_manager, &Manager::paint , &_mainWindow, &MainWindow::paint);
+
+_mainWindow.show();
 
 }
