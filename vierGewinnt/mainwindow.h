@@ -2,8 +2,6 @@
 #define MAINWINDOW_H
 #include<QMainWindow>
 #include<dialog.h>
-#include "connector.hpp"
-
 namespace Ui {
 class MainWindow;
 }
@@ -15,6 +13,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
 signals:
     createServer(quint8);
     createClient();
@@ -36,11 +35,21 @@ private slots:
 
     void on_ButtonServer_clicked();
 
-private:
-    Ui::MainWindow *ui;
+private:  
     Connector _connector(ui);
-
+    Ui::MainWindow *ui;
     Dialog *Game;
+    //---------------------COLUMN AND ROW NUMBER TO PASS-----------------
+    int m_ColumNumberToPass=7;
+    int m_RowNumberToPass=7;
+    //-------------------------------------------------------------------
+
+    //--------- BOOL To check if one CHECKBOX IS ALREADY PRESSED---------
+    bool m_CheckBoxPressed;
+    //---------------------- PLACE HOLDERS for flags---------------------
+    bool m_holderFlagbSet6 = false;
+    bool m_holderFlagbSet7 = false;
+
 };
 
 #endif //MAINWINDOWS_H

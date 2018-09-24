@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->widget->hide();
+    m_CheckBoxPressed=false;
 }
 
 MainWindow::~MainWindow()
@@ -30,7 +31,7 @@ void MainWindow::on_pushButton_clicked()
         qDebug()<<"You Have To choooose";
     }*/
 
-    Game = new Dialog(this);
+    Game = new Dialog(this ,m_ColumNumberToPass ,m_RowNumberToPass ,m_holderFlagbSet6 ,m_holderFlagbSet7);
     Game->show();
 }
 
@@ -46,22 +47,39 @@ void MainWindow::on_pushButton_Connect_clicked()
 
 void MainWindow::on_checkBox_2_clicked() //7
 {
-    /*_GridXtoDraw=7;
-    _GridYtoDraw=7;
-    RadioPressed = true;*/
+    if(!m_CheckBoxPressed)
+        {
+            m_CheckBoxPressed=true;
+            m_ColumNumberToPass=7;
+            m_RowNumberToPass=7;
+        }
+    //-------------------------Maybe add ui->check3 and checkbox -> hide-------------
+    //---------------- ui->checkBox3->hide
+    //                 ui->checkBox->hide
+    //                 ui->you just choosed WIDGET-> show()
+    //-------------------------------------------------------------------------------
 }
 
 void MainWindow::on_checkBox_3_clicked() //6
-{
-    /*_GridXtoDraw=6;
-    _GridYtoDraw=6;
-    RadioPressed = true;*/
+{   if(!m_CheckBoxPressed)
+    {
+        m_CheckBoxPressed=true;
+        m_ColumNumberToPass=6;
+        m_RowNumberToPass=6;
+        m_holderFlagbSet7 = true;
+    }
 }
 
 void MainWindow::on_checkBox_clicked() //5
 {
-    /*
-    RadioPressed = true;*/
+    if(!m_CheckBoxPressed)
+        {
+            m_CheckBoxPressed=true;
+            m_ColumNumberToPass=5;
+            m_RowNumberToPass=5;
+            m_holderFlagbSet7 = true;
+            m_holderFlagbSet6 = true;
+        }
 }
 
 

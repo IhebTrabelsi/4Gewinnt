@@ -41,7 +41,7 @@ border-radius:4px;
      <number>1</number>
     </property>
     <item row="0" column="6">
-     <widget class="QPushButton" name="bSet1">
+     <widget class="QPushButton" name="bSet7">
       <property name="cursor">
        <cursorShape>PointingHandCursor</cursorShape>
       </property>
@@ -53,8 +53,8 @@ border-radius:4px;
       </property>
      </widget>
     </item>
-    <item row="0" column="5">
-     <widget class="QPushButton" name="bSet2">
+    <item row="0" column="4">
+     <widget class="QPushButton" name="bSet5">
       <property name="cursor">
        <cursorShape>PointingHandCursor</cursorShape>
       </property>
@@ -63,7 +63,17 @@ border-radius:4px;
       </property>
      </widget>
     </item>
-    <item row="0" column="4">
+    <item row="0" column="5">
+     <widget class="QPushButton" name="bSet6">
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
      <widget class="QPushButton" name="bSet3">
       <property name="cursor">
        <cursorShape>PointingHandCursor</cursorShape>
@@ -83,28 +93,18 @@ border-radius:4px;
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QPushButton" name="bSet6">
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QPushButton" name="bSet5">
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="0">
-     <widget class="QPushButton" name="bSet7">
+     <widget class="QPushButton" name="bSet1">
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QPushButton" name="bSet2">
       <property name="cursor">
        <cursorShape>PointingHandCursor</cursorShape>
       </property>
@@ -115,7 +115,7 @@ border-radius:4px;
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="" native="true">
+  <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
     <rect>
      <x>654</x>
