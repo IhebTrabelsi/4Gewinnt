@@ -33,7 +33,7 @@ void MyTcpServer::newConnection()
              this, SLOT(disconnected()) );
     connect(_mysocket, SIGNAL(readyRead()), this, SLOT(processRecievedInformation()));
     //sendZug(0x02);
-    //sendParameters(0x02, 0x02, 0x01, 0x01);
+    sendParameters(0x02, 0x02, 0x01, 0x01);
     //sendParameters(0x02, 0x02, 0x02, 0x01);
     emit serverIsConnectedToClient();
 }
@@ -105,6 +105,13 @@ void MyTcpServer::processRecievedInformation()
     qint8 Statuscode;
     _mystream >> Cmd;
     _mystream >>  length;
+    qint64 bytesAvailabe= _mysocket->bytesAvailable();
+    qDebug() << "BytesAvailable" << bytesAvailabe;
+    if (bytesAvailabe != length)
+    {
+        emit Fehler(0x03);
+        return;
+    }
     qDebug() << "Cmd: " << Cmd;
     qDebug() << "Length: " << length;
     switch(Cmd)
@@ -142,6 +149,8 @@ void MyTcpServer::processRecievedInformation()
             emit AntwortAufZug(Cmd, Statuscode);
             qDebug() << "X Position Zug: " << Statuscode;
             break;
+        default:
+            emit Fehler(0x02);
 
 
     }

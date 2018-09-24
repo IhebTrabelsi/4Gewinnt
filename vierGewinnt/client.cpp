@@ -1,4 +1,4 @@
-#include "client.h" 
+#include "client.h"
 
 Client::Client(QString Adress, quint16 Port, QObject *parent)
     : QObject(parent), _Adress(Adress), _Port(Port)
@@ -79,6 +79,13 @@ void Client::processRecievedInformation()
     qint8 Statuscode;
     _mystream >> Cmd;
     _mystream >>  length;
+    qint64 bytesAvailabe= _mysocket->bytesAvailable();
+    qDebug() << "BytesAvailable" << bytesAvailabe;
+    if (bytesAvailabe != length)
+    {
+        emit Fehler(0x03);
+        return;
+    }
     qDebug() << "Cmd: " << Cmd;
     qDebug() << "Length: " << length;
     switch(Cmd)
@@ -116,6 +123,8 @@ void Client::processRecievedInformation()
             emit AntwortAufZug(Cmd, Statuscode);
             qDebug() << "X Position Zug: " << Statuscode;
             break;
+        default:
+            emit Fehler(0x02);
 
 
     }

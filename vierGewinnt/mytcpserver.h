@@ -22,6 +22,7 @@ signals:
     void AntwortAufAnfrage(qint8 Cmd, qint8 Statuscode); // Antwort auf anfrage
     void AntwortAufSpielfeldParameter(qint8 Cmd, qint8 xGridSize, qint8 yGridSize, qint8 Rundenzahl, qint8 Beginnender); // Antwort auf spielfeld parameter
     void AntwortAufRundenbeginn(qint8 Cmd, qint8 Rundenummer, qint8 BeginnenderRunde); //Antwort auf Rundenbeginn
+    void Fehler(qint8 f);
 public slots:
     //use this functions//////////////////////
     void disconnectTheClient(); // disconnect the client from the server (! client reconnects automatically)
