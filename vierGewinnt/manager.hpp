@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QWidget>
 #include <memory>
+<<<<<<< Updated upstream
 #include <iostream>
 #include "spiel.hpp"
 #include "mytcpserver.h"
@@ -14,6 +15,10 @@
  * @file manager.hpp Header file für Manager Klasse
  * @author Simon Näther
  **/
+=======
+#include <array>
+#include <QString>
+>>>>>>> Stashed changes
 
 
 /**
@@ -31,6 +36,7 @@ public:
     ~Manager();
 	
 	void spielStart();
+<<<<<<< Updated upstream
     void setServerClient (bool serverOrClient ,quint16 port = 0 ,QString IP = " ");
     /**
      *  @brief bearbeitet anfrage eines Clients
@@ -41,6 +47,11 @@ public:
      **/
     void clientResieved(void); // Chedi Comment : received wird so geschrieben
     void handleEvent(quint8 code, quint8 value);
+=======
+    void setServerClient (bool serverOrClient ,QString port = " " ,QString IP = " ");
+	void handleEvent(quint32 netcode);
+	
+>>>>>>> Stashed changes
 	/**
      *  @brief beendet das Spiel
      **/
@@ -84,7 +95,11 @@ private:
 		quint8  _spalten = 7;
 		quint8  _rundenzahl = 3;
 		bool    _beginnender;
+<<<<<<< Updated upstream
         bool    _serverOrClient; // 0x00 Server / 0x01 Client
+=======
+		bool    _serverOrClient;
+>>>>>>> Stashed changes
         QString _IPadresse;
         QString _port;
 		bool    _gameRunning;
@@ -105,4 +120,36 @@ signals:
 };
 
 
+<<<<<<< Updated upstream
+=======
+/**
+ *  @brief Spiel stellt den Spielstand dar
+ */
+template<size_t X_size, size_t Y_size>
+class Spiel {
+    Q_OBJECT
+
+public:
+    /**
+     *  @brief Spiel Konstruktor und Destruktor
+     *
+     **/
+    explicit Spiel(quint8 x, quint8 y, stein beginnenderSpieler);
+    ~Spiel();
+	
+
+	
+	
+	
+private:
+		quint8  	  _rundennummer =1;
+		stein   	  _currentPlayer;
+        stein[X_size][Y_size]   _grid = {zero};
+		const quint8  _x;
+		const quint8  _y;
+		quint8  	  _gewonnenSpieler1 =0;
+		quint8  	  _gewonnenSpieler2 =0;
+};
+
+>>>>>>> Stashed changes
 #endif
