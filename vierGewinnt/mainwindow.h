@@ -33,8 +33,18 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-
     Dialog *Game;
+    //---------------------COLUMN AND ROW NUMBER TO PASS-----------------
+    int m_ColumNumberToPass=7;
+    int m_RowNumberToPass=7;
+    //-------------------------------------------------------------------
+
+    //--------- BOOL To check if one CHECKBOX IS ALREADY PRESSED---------
+    bool m_CheckBoxPressed;
+    //---------------------- PLACE HOLDERS for flags---------------------
+    bool m_holderFlagbSet6 = false;
+    bool m_holderFlagbSet7 = false;
+
 };
 
 #endif //MAINWINDOWS_H
