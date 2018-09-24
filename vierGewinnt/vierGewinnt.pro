@@ -29,7 +29,8 @@ SOURCES += \
     client.cpp \
     manager.cpp \
     mytcpserver.cpp \
-    spiel.cpp
+    spiel.cpp \
+    connector.cpp
 
 HEADERS += \
         dialog.h \
@@ -39,7 +40,8 @@ HEADERS += \
     client.h \
     manager.hpp \
     mytcpserver.h \
-    spiel.hpp
+    spiel.hpp \
+    connector.hpp
 
 FORMS += \
         dialog.ui \

@@ -2,12 +2,14 @@
 #define CONNECTOR_HPP
 
 #include <QObject>
+#include <QWidget>
+
 
 
 class Connector: public QObject {
     Q_OBJECT
 public:
-    Connector();
+    Connector(QWidget *parent = 0);
 
 signals:
 

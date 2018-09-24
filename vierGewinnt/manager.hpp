@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QWidget>
 #include <memory>
-#include <array>
 #include <iostream>
 #include "spiel.hpp"
 #include "mytcpserver.h"

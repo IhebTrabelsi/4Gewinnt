@@ -2,6 +2,7 @@
 #define SPIEL_HPP
 
 #include <QtGlobal>
+#include <vector>
 
 enum class stein : char { Player1 , Player2 , zero };
 
