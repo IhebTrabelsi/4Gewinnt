@@ -18,10 +18,12 @@ public:
 signals:
     void createServer(bool server, quint16 port, QString ip);
     void createClient(bool server, quint16 port, QString ip);
-    void spieleStein (quint8 x);
+    void spieleStein (quint8 x); //bitte überall einbauen wo ein Stein gesetzt werden sollXXX
     void signalQuit();
+    void signalSetSize(quint8 x, quint8 y);
 public slots:
-    //void chat(QString massage);
+    //void chat(QString massage); //bitte in chat ausgebenXXX
+    //void paint(quint8 x, quint8 y, stein spieler); //bitte stein in spielfeld setzenXXX
 
 private slots:
     void on_pushButton_clicked();

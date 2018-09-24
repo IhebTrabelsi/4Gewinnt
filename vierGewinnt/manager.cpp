@@ -6,15 +6,7 @@ Manager::Manager(QWidget *parent)
 {
 
 	
-    //connect(_pbXXXClose, SIGNAL(clicked()), this, SLOT(quit()));
-    //connect(this, &Manager::closeSignal, this, SLOT(close()));
 
-/*
-///Chat Funktionalität
-_gameChat = new MyStream("GAME: " + std::cout, ui->tbXXXOut);
-_player1Chat = new MyStream("->" + XXX , ui->tbXXXOut);
-_player2Chat = new MyStream("<-" + XXX , ui->tbXXXOut);
-*/
 }
 
 
@@ -53,12 +45,12 @@ void Manager::serverRequested(void){
     if(_beginnender)val = 0x00;
     else val = 0x01;
     emit sendParameters(0x01, 0x04, _spalten, _zeilen, _rundenzahl, val);
-
+    emit gameChat("GAME:  Gegner Verbunden!"); //<<std::endl;
 }
 
 
 
-void Manager::clientReceived(quint8 spalten, quint8 zeilen, quint8 rundenzahl, quint8 beginnender){
+void Manager::clientReceived(qint8 Cmd, qint8 spalten, qint8 zeilen, qint8 rundenzahl, qint8 beginnender){
     if(beginnender = 0x00)_beginnender= true;
     else _beginnender =false;
 
@@ -66,14 +58,15 @@ void Manager::clientReceived(quint8 spalten, quint8 zeilen, quint8 rundenzahl, q
     _zeilen = zeilen;
     _rundenzahl = rundenzahl;
 
-    emit network(0x10, 0x01, 0x00);
+    if(! _serverOrClient)emit networkServer(0x10, 0x01, 0x00);
+    else emit networkClient(0x10, 0x01, 0x00);
     spielStart();
 }
 
 
 
 void Manager::spielStart(){
-	if( _beginnender){
+    if(! _beginnender){
         _spiel = new Spiel(_spalten, _zeilen, stein::Player1);
 	}
 	else{
@@ -97,12 +90,12 @@ void Manager::handleEvent(quint8 code, quint8 value){
                         emit gameChat("GAME:  Du hast gewonnen!"); //<<std::endl;
 						_spiel->_gewonnenSpieler1 ++;
 						nextZug();
-						nextRound();
+                        nextRound(true);
 						break;
 						
 					case 0x02 :
                         emit gameChat("GAME:  Unetschieden!"); //<<std::endl;
-						nextRound();
+                        nextRound(false);
 						break;
 						
 					case 0x10 :
@@ -166,10 +159,11 @@ void Manager::insertStein(quint8 x){
 		
 		quint8 y = setzeStein(x);
         //quint32 out = 0x00030100 + x ;
-        emit network(0x03, 0x01, x); //XXX
+        if(! _serverOrClient)emit networkServer(0x03, 0x01, x);
+        else emit networkClient(0x03, 0x01, x);
 		if(checkWin(x, y)){
             emit gameChat("GAME:  Du hast gewonnen!"); //<<std::endl;
-			nextRound();
+            nextRound(true);
 		}
 	}
 	else{
@@ -184,7 +178,7 @@ quint8 Manager::setzeStein(quint8 x){
     while(_spiel->_grid[x][count] == stein::zero) count++;
 	
 	_spiel->_grid[x][count] = _spiel->_currentPlayer;
-    //emit paint(x, count, _spiel->_currentPlayer);
+    //Zemit paint(x, count, _spiel->_currentPlayer);
 	return count;
 }
 
@@ -193,10 +187,12 @@ quint8 Manager::setzeStein(quint8 x){
 void Manager::checkZug(quint8 x){
 	if(! checkValid(x)){
         if(_spiel->_grid[x][0] != stein::zero){
-            emit network(0x11, 0x01, 0x12);
+            if(! _serverOrClient)emit networkServer(0x11, 0x01, 0x12);
+            else emit networkClient(0x11, 0x01, 0x12);
 		}
 		else{
-            emit network(0x11, 0x01, 0x11);
+            if(! _serverOrClient)emit networkServer(0x11, 0x01, 0x11);
+            else emit networkClient(0x11, 0x01, 0x11);
 		}
 
 	}
@@ -204,17 +200,20 @@ void Manager::checkZug(quint8 x){
 		quint8 y = setzeStein(x);
 		if(checkDraw()){
             emit gameChat("GAME:  Unentschieden!"); //<<std::endl;
-			nextRound();
-            emit network(0x11, 0x01 ,0x02);
+            nextRound(false);
+            if(! _serverOrClient)emit networkServer(0x11, 0x01 ,0x02);
+            else emit networkClient(0x11, 0x01 ,0x02);
 		}
 		else if(checkWin(x ,y )){
             emit gameChat("GAME:  Du hast verlohren!"); //<<std::endl;
             _spiel->_gewonnenSpieler2 ++;
-            emit network(0x11, 0x01, 0x01);
+            if(! _serverOrClient)emit networkServer(0x11, 0x01, 0x01);
+            else emit networkClient(0x11, 0x01, 0x01);
 		}
 		else{
 			nextZug();
-            emit network(0x11, 0x01, 0x00);
+            if(! _serverOrClient)emit networkServer(0x11, 0x01, 0x00);
+            else emit networkClient(0x11, 0x01, 0x00);
 		}
 
 	}
@@ -314,8 +313,19 @@ bool Manager::checkDraw(){
 
 
 
-void Manager::nextRound(){
+void Manager::nextRound(bool change){
+ //XXX
+   if(change){
+       if(_spiel->_currentPlayer == stein::Player1)_spiel->_currentPlayer = stein::Player2;
+       if(_spiel->_currentPlayer == stein::Player2)_spiel->_currentPlayer = stein::Player1;
+   }
+   quint8 beginnender;
+   if(_client == nullptr && _spiel->_currentPlayer == stein::Player2)beginnender = 0x01;
+   if(_client == nullptr && _spiel->_currentPlayer == stein::Player1)beginnender = 0x00;
+   if(_server == nullptr && _spiel->_currentPlayer == stein::Player2)beginnender = 0x00;
+   if(_server == nullptr && _spiel->_currentPlayer == stein::Player1)beginnender = 0x01;
 
+   //XXX emit
 }
 
 
@@ -332,5 +342,13 @@ void Manager::nextZug(){
 }
 
 
+void Manager::setSize(quint8 x, quint8 y){
+    _spalten = x;
+    _zeilen = y;
+}
 
-
+void Manager::setNextRound(qint8 Cmd, qint8 Rundenummer, qint8 BeginnenderRunde){
+    if(BeginnenderRunde && _serverOrClient)_spiel->_currentPlayer = stein::Player1;
+    else _spiel->_currentPlayer = stein::Player2;
+    _spiel->_rundennummer = Rundenummer;
+}

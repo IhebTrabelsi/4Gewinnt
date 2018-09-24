@@ -36,14 +36,14 @@ public slots:
 	void spielStart();
 
     /**
-     *  @brief bearbeitet anfrage eines Clients
+     *  @brief bearbeitet Anfrage eines Clients
      **/
     void serverRequested(void);
 
     /**
      *  @brief bearbeitet vom Server gesandete Spielparameter
      **/
-    void clientReceived(quint8 spalten, quint8 zeilen, quint8 rundenzahl, quint8 beginnender);
+    void clientReceived(qint8 Cmd, qint8 x, qint8 y, qint8 Rundenzahl, qint8 Beginnender);
 
     void handleEvent(quint8 code, quint8 value);
 
@@ -78,15 +78,26 @@ public slots:
 	/**
      *  @brief beendet die Runde
      **/
-	void nextRound();	
+    void nextRound(bool change);
 	/**
      *  @brief Zugwechsel
      **/
 	void nextZug();
 
+    /**
+     *  @brief ändert Spielfeldgröße
+     **/
+    void setSize(quint8 x, quint8 y);
+
+    /**
+     *  @brief ändert Spielfeldgröße
+     **/
+    void setNextRound(qint8 Cmd, qint8 Rundenummer, qint8 BeginnenderRunde);
+
+
 
 	
-private:
+public:
 		quint8  _zeilen =7;
 		quint8  _spalten = 7;
 		quint8  _rundenzahl = 3;
@@ -106,11 +117,13 @@ private:
 		
 signals:
         //signalClose();
-        void network(quint8 , quint8, quint8);
+        void networkServer(quint8 , quint8, quint8);
+        void networkClient(quint8 , quint8, quint8);
         void closeSignal();
         void sendParameters(quint8, quint8, quint8, quint8, quint8, quint8);
-        //XXXpaint(quint8 x, quint8 y, stein spieler);
+        void paint(quint8 x, quint8 y, stein spieler);
         void gameChat(QString massage);
+        void signalNextRound(quint8, quint8, quint8);
 };
 
 

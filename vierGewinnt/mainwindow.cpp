@@ -52,6 +52,7 @@ void MainWindow::on_checkBox_2_clicked() //7
             m_CheckBoxPressed=true;
             m_ColumNumberToPass=7;
             m_RowNumberToPass=7;
+            emit signalSetSize( 7, 7);
         }
     //-------------------------Maybe add ui->check3 and checkbox -> hide-------------
     //---------------- ui->checkBox3->hide
@@ -67,6 +68,7 @@ void MainWindow::on_checkBox_3_clicked() //6
         m_ColumNumberToPass=6;
         m_RowNumberToPass=6;
         m_holderFlagbSet7 = true;
+        emit signalSetSize( 6, 6);
     }
 }
 
@@ -79,6 +81,7 @@ void MainWindow::on_checkBox_clicked() //5
             m_RowNumberToPass=5;
             m_holderFlagbSet7 = true;
             m_holderFlagbSet6 = true;
+            emit signalSetSize( 5, 5);
         }
 }
 
@@ -97,5 +100,6 @@ void MainWindow::on_ButtonClient_clicked()
 void MainWindow::on_ButtonServer_clicked()
 {
     ui->widget->show();
+    //emit createServer(bool server, quint16 port, QString ip);
 }
 
