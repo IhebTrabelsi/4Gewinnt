@@ -15,6 +15,7 @@ connect(&_mainWindow, &MainWindow::signalQuit , &_manager, &Manager::quit);
 //XXXconnect(&_manager, &Manager::paint , &_mainWindow, &MainWindow::paint);
 
 //connect(&_manager, &Manager::paint , &_mainWindow, &MainWindow::paint);
+//connect(&_manager, &Manager::gameChat , &_mainWindow, &MainWindow::chat);
 
 _mainWindow.show();
 

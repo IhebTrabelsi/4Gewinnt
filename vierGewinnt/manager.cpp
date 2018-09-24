@@ -94,35 +94,35 @@ void Manager::handleEvent(quint8 code, quint8 value){
 						break;
 						
 					case 0x01 :
-						std::cout<<"Du hast gewonnen!"<<std::endl;
+                        emit gameChat("GAME:  Du hast gewonnen!"); //<<std::endl;
 						_spiel->_gewonnenSpieler1 ++;
 						nextZug();
 						nextRound();
 						break;
 						
 					case 0x02 :
-						std::cout<<"Unetschieden!"<<std::endl;						
+                        emit gameChat("GAME:  Unetschieden!"); //<<std::endl;
 						nextRound();
 						break;
 						
 					case 0x10 :
-						std::cout<<"Du warst nicht an der Reihe!"<<std::endl;
+                        emit gameChat("GAME:  Du warst nicht an der Reihe!"); //<<std::endl;
 						break;
 						
 					case 0x11 :
-						std::cout<<"Außerhalb des Spielfeldes!"<<std::endl;
+                        emit gameChat("GAME:  Außerhalb des Spielfeldes!"); //<<std::endl;
 						break;
 						
 					case 0x12 :
-						std::cout<<"Spalte ist voll!"<<std::endl;
+                        emit gameChat("GAME:  Spalte ist voll!"); //<<std::endl;
 						break;
 						
 					case 0x13 :
-						std::cout<<"kein laufendes Spiel!"<<std::endl;
+                        emit gameChat("GAME:  kein laufendes Spiel!"); //<<std::endl;
 						break;
 					
 					case 0x20 :
-						std::cout<<"Unbekannter Fehler aufgetreten!"<<std::endl;
+                        emit gameChat("GAME:  Unbekannter Fehler aufgetreten!"); //<<std::endl;
 						break;
 				}
             break;}
@@ -132,7 +132,7 @@ void Manager::handleEvent(quint8 code, quint8 value){
 			break;
 			
 //		case 0xXXX :
-//			std::cout<<"Gegener ist beigetreten."<<std::endl;
+//			emit gameChat("GAME:  Gegener ist beigetreten."); //<<std::endl;
 //			break;
 	}
 }
@@ -143,7 +143,7 @@ void Manager::quit(){
 	if(_gameRunning){
         delete _spiel;
 		_gameRunning = false;
-		std::cout<<"Laufendes Spiel abgebrochen!"<<std::endl;
+        emit gameChat("GAME:  Laufendes Spiel abgebrochen!"); //<<std::endl;
         if(_serverOrClient){
             _server->disconnectTheClient();
             delete _server;
@@ -168,12 +168,12 @@ void Manager::insertStein(quint8 x){
         //quint32 out = 0x00030100 + x ;
         emit network(0x03, 0x01, x); //XXX
 		if(checkWin(x, y)){
-			std::cout<<"Du hast gewonnen!"<<std::endl;
+            emit gameChat("GAME:  Du hast gewonnen!"); //<<std::endl;
 			nextRound();
 		}
 	}
 	else{
-		std::cout<<"Du bist nicht am Zug!"<<std::endl;
+        emit gameChat("GAME:  Du bist nicht am Zug!"); //<<std::endl;
 	}
 }
 
@@ -203,12 +203,12 @@ void Manager::checkZug(quint8 x){
 	else{
 		quint8 y = setzeStein(x);
 		if(checkDraw()){
-			std::cout<<"Unentschieden!"<<std::endl;
+            emit gameChat("GAME:  Unentschieden!"); //<<std::endl;
 			nextRound();
             emit network(0x11, 0x01 ,0x02);
 		}
 		else if(checkWin(x ,y )){
-			std::cout<<"Du hast verlohren!"<<std::endl;
+            emit gameChat("GAME:  Du hast verlohren!"); //<<std::endl;
             _spiel->_gewonnenSpieler2 ++;
             emit network(0x11, 0x01, 0x01);
 		}
@@ -224,12 +224,12 @@ void Manager::checkZug(quint8 x){
 
 bool Manager::checkValid(quint8 x){
 	if(x < 0 || x > _spiel->_x){
-		std::cout<<"Stein wurde neben das Gitter geworfen!"<<std::endl;
+        emit gameChat("GAME:  Stein wurde neben das Gitter geworfen!"); //<<std::endl;
 		return false;
 	}
 	
     if(_spiel->_grid[x][0] != stein::zero){
-		std::cout<<"Stein wurde in eine bereits volle Spalte geworfen!"<<std::endl;
+        emit gameChat("GAME:  Stein wurde in eine bereits volle Spalte geworfen!"); //<<std::endl;
 		return false;
 	}
 	
@@ -323,11 +323,11 @@ void Manager::nextRound(){
 void Manager::nextZug(){
     if(_spiel->_currentPlayer == stein::Player1){
         _spiel->_currentPlayer = stein::Player2;
-		std::cout<<"Dein Gegner ist jetzt am Zug."<<std::endl;
+        emit gameChat("GAME:  Dein Gegner ist jetzt am Zug."); //<<std::endl;
 	}
 	else{
         _spiel->_currentPlayer = stein::Player1;
-		std::cout<<"Du bist jetzt am Zug."<<std::endl;
+        emit gameChat("GAME:  Du bist jetzt am Zug."); //<<std::endl;
 	}
 }
 

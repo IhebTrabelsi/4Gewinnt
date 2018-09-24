@@ -17,9 +17,11 @@ public:
 
 signals:
     void createServer(bool server, quint16 port, QString ip);
-    void createClient();
+    void createClient(bool server, quint16 port, QString ip);
     void spieleStein (quint8 x);
     void signalQuit();
+public slots:
+    //void chat(QString massage);
 
 private slots:
     void on_pushButton_clicked();

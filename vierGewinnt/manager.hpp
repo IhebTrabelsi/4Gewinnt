@@ -32,6 +32,7 @@ public:
     ~Manager();
 
 public slots:
+    void setServerClient (bool serverOrClient ,quint16 port ,QString IP);
 	void spielStart();
 
     /**
@@ -82,7 +83,8 @@ public slots:
      *  @brief Zugwechsel
      **/
 	void nextZug();
-	
+
+
 	
 private:
 		quint8  _zeilen =7;
@@ -108,6 +110,7 @@ signals:
         void closeSignal();
         void sendParameters(quint8, quint8, quint8, quint8, quint8, quint8);
         //XXXpaint(quint8 x, quint8 y, stein spieler);
+        void gameChat(QString massage);
 };
 
 
