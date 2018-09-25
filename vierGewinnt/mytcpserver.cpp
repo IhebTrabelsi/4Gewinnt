@@ -2,7 +2,6 @@
 MyTcpServer::MyTcpServer(quint16 Port, QObject *parent) :
     QObject(parent), _Port(Port)
 {
-openServer();
 }
 void MyTcpServer::openServer()
 {
@@ -14,8 +13,10 @@ void MyTcpServer::openServer()
     if(!_myserver->listen(QHostAddress::Any, _Port))
     {
         qDebug() << "Server could not start";
+        emit sendMessage("Network: Server could not start");
     }
     else{
+        emit sendMessage("Network: Server started! Just wait for a client to connect");
         qDebug() << "Server started!";
         qDebug() << _myserver->serverAddress();
         qDebug() << _myserver->serverPort();
@@ -29,12 +30,10 @@ void MyTcpServer::newConnection()
     _mysocket = _myserver->nextPendingConnection();
     _mystream.setDevice(_mysocket);
     qDebug()<< "Client connected to the server"<< "\n";
+    emit sendMessage("Network: Client connected to the server");
     connect( _mysocket, SIGNAL(disconnected()),
              this, SLOT(disconnected()) );
     connect(_mysocket, SIGNAL(readyRead()), this, SLOT(processRecievedInformation()));
-    //sendZug(0x02);
-    sendParameters(0x02, 0x02, 0x01, 0x01);
-    //sendParameters(0x02, 0x02, 0x02, 0x01);
     emit serverIsConnectedToClient();
 }
 
@@ -43,6 +42,7 @@ void MyTcpServer::disconnectTheClient()
     if (_mysocket)
     {
         _mysocket->close();
+        emit sendMessage("Network: Disconnected The Client");
         qDebug() << "Disconnected The Client"<< "\n";
     }
 }
@@ -51,7 +51,8 @@ void MyTcpServer::disconnectTheServer()
 {
     disconnectTheClient();
     closeServer();
-    qDebug() << "Server is Totally Closeds"<< "\n";
+    emit sendMessage("Network: Server is Totally Closed");
+    qDebug() << "Server is Totally Closed"<< "\n";
 }
 void MyTcpServer::closeServer()
 {
@@ -64,6 +65,7 @@ void MyTcpServer::closeServer()
 
 
 void MyTcpServer::disconnected() {
+    sendMessage("Network: Disconnecting");
     qDebug() << "Disconnecting/Deleting Socket" << "\n";
     _mystream.device()->deleteLater();
     openServer();

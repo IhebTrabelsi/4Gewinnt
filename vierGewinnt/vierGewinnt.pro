@@ -31,7 +31,6 @@ SOURCES += \
     mytcpserver.cpp \
     spiel.cpp \
     connector.cpp \
-    gridcontainer.cpp \
     stone.cpp
 
 HEADERS += \
@@ -42,7 +41,6 @@ HEADERS += \
     mytcpserver.h \
     spiel.hpp \
     connector.hpp \
-    gridcontainer.h \
     stone.h
 
 FORMS += \

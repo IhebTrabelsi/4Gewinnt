@@ -7,13 +7,6 @@
 #include<vector>
 #include"stone.h"
 //#include<memory>
-/*
- *Pour le Moment nekhdem bel pointers laadiyin mba3ed nchoufou
- *
- *
- */
-
-
 namespace Ui {
 class Dialog;
 }

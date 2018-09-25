@@ -4,7 +4,6 @@ Client::Client(QString Adress, quint16 Port, QObject *parent)
     : QObject(parent), _Adress(Adress), _Port(Port)
 {
     _mystream.setByteOrder(QDataStream::BigEndian);
-    connectToServer();
 }
 
 void Client::connectToServer()
@@ -18,7 +17,8 @@ void Client::connectToServer()
              this, SLOT(enableConnection()) );
     connect( _mysocket, SIGNAL(disconnected()),
              this, SLOT(disconnected()) );
-    qDebug() << "Connecting to port " << _Port << "\n";
+    emit sendMessage("Network: Connecting to IP : "+_Adress+" and Port: "+QString::number(_Port));
+    qDebug() << "Connecting to port " << _Port << " IP : " << _Adress;
 }
 
 void Client::enableConnection() {
@@ -26,6 +26,7 @@ void Client::enableConnection() {
 
     _mystream.setDevice(_mysocket);
     connect(_mysocket, SIGNAL(readyRead()), this, SLOT(processRecievedInformation()));
+    emit sendMessage("Network: Connected you can begin your first Round now");
     qDebug() <<"Connected";       // OUTPUT CONNECTED
     emit clientIsConnectedtoServer();
 
@@ -34,12 +35,14 @@ void Client::enableConnection() {
 void Client::disconnectFromServer()
 {
     qDebug() <<"Disconnected from Server"<< "\n" ;
+    emit sendMessage("Network: Disconnected from Server");
     _mysocket->disconnectFromHost();
     _mystream.device()->deleteLater();
 }
 
 void Client::disconnected() {
     qDebug() << "Disconnecting/Deleting Socket" << "\n";
+    emit sendMessage("Network: Disconnecting/Deleting Socket");
     _mystream.device()->deleteLater();
     connectToServer();
 }

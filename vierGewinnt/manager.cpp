@@ -1,5 +1,4 @@
 #include "manager.hpp"
-#include <stdlib.h> 
 
 
 Manager::Manager(QWidget *parent)
@@ -22,31 +21,31 @@ Manager::~Manager()
 
 
 void Manager::setServerClient (bool serverOrClient ,quint16 port ,QString IP){
-	if(serverOrClient){
+    _serverOrClient = serverOrClient;   // hier finder übergabe von der grafik zur logik
+    if(serverOrClient == false){
+        //creates server and opens it
+        _server = new MyTcpServer(port);
+        emit networkConnects(serverOrClient);
+        _server->openServer();
+        // make a random function who begins and it's given to the other player after
+        srand (time(NULL));
         int v = rand() % 2 ;
-		if( v==1){
+        if( v==1)
+        {
             _beginnender = true;
-            _server = new MyTcpServer(port);
         }
-		else{
+        else
+        {
             _beginnender = false;
-            _server = new MyTcpServer(port);
 		}
 	}
 	else{
         _client = new Client(IP , port);
+        emit networkConnects(serverOrClient);
+        _client->connectToServer();
 	}
 }
 
-
-
-void Manager::serverRequested(void){
-    quint8 val;
-    if(_beginnender)val = 0x00;
-    else val = 0x01;
-    emit sendParameters(0x01, 0x04, _spalten, _zeilen, _rundenzahl, val);
-    emit gameChat("GAME:  Gegner Verbunden!"); //<<std::endl;
-}
 
 
 
@@ -343,9 +342,16 @@ void Manager::nextZug(){
 }
 
 
-void Manager::setSize(quint8 x, quint8 y){
+void Manager::setSizeAndSend(quint8 x, quint8 y, quint8 rundenzahl){
     _spalten = x;
     _zeilen = y;
+    _rundenzahl = rundenzahl;
+    quint8 val;
+    if(_beginnender) val = 0x00;
+    else val = 0x01;
+    emit sendParameters(0x01, 0x04, _spalten, _zeilen, _rundenzahl, val);
+    emit gameChat("GAME:  Ihre Grid- und Rundenauswahl würden and den gegner weiter gegeben");
+
 }
 
 void Manager::setNextRound(qint8 Cmd, qint8 Rundenummer, qint8 BeginnenderRunde){

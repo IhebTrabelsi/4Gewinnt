@@ -8,6 +8,8 @@
 #include "spiel.hpp"
 #include "mytcpserver.h"
 #include "client.h"
+#include <stdlib.h>
+#include <time.h>
 
 
 /**
@@ -50,7 +52,7 @@ public slots:
     /**
      *  @brief sends gamedata to a recently connected client
      **/
-    void serverRequested(void);
+    //void serverRequested(void); // not needed anymore check setSizeAndSend(quint8 x, quint8 y, quint8 rundenzahl)
 
     /**
      *  @brief saves gamedate send from another server
@@ -136,11 +138,12 @@ public slots:
 
     /**
      *  @brief sets gridsize for the next game
+     * and sends the first parameters and sets the roundnumber
      *
      *  @param[in] number of columms
      *  @param[in] number of lines
      **/
-    void setSize(quint8 x, quint8 y);
+    void setSizeAndSend(quint8 x, quint8 y, quint8 rundenzahl);
 
     /**
      *  @brief handles signal to start next round
@@ -177,6 +180,8 @@ signals:
         void paint(quint8 x, quint8 y, stein spieler);
         void gameChat(QString massage);
         void signalNextRound(quint8, quint8, quint8);
+
+        void networkConnects(bool);
 };
 
 

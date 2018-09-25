@@ -20,6 +20,9 @@ public:
 
 signals:
 
+public slots:
+    void networkConnects(bool serverOrClient);
+
 };
 
 #endif // CONNECTOR_HPP

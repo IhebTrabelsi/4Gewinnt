@@ -6,6 +6,7 @@
 #include <QObject>
 #include <cassert>
 #include <QDebug>
+#include <QString>
 
 
 class Client : public QObject
@@ -21,6 +22,7 @@ signals:
     void AntwortAufSpielfeldParameter(qint8 Cmd, qint8 xGridSize, qint8 yGridSize, qint8 Rundenzahl, qint8 Beginnender); // Antwort auf spielfeld parameter
     void AntwortAufRundenbeginn(qint8 Cmd, qint8 Rundenummer, qint8 BeginnenderRunde); //Antwort auf Rundenbeginn
     void Fehler(qint8 f);
+    void sendMessage(QString message);
 public slots:
     // you can call these functions//////////////////////
 

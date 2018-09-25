@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1395</width>
-    <height>757</height>
+    <width>899</width>
+    <height>746</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,8 +51,8 @@ border-radius: 13px;
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>980</x>
-      <y>580</y>
+      <x>470</x>
+      <y>530</y>
       <width>381</width>
       <height>131</height>
      </rect>
@@ -72,8 +72,8 @@ border-radius: 13px;
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>900</x>
-      <y>380</y>
+      <x>470</x>
+      <y>370</y>
       <width>416</width>
       <height>148</height>
      </rect>
@@ -160,7 +160,7 @@ border-radius: 13px;
        <x>20</x>
        <y>40</y>
        <width>213</width>
-       <height>56</height>
+       <height>58</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -288,6 +288,19 @@ border-radius: 13px;
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_Connect">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Connect</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
       </layout>
@@ -329,19 +342,6 @@ border-radius: 13px;
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_Connect">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Connect</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </item>
     </layout>
@@ -349,10 +349,10 @@ border-radius: 13px;
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>20</y>
-      <width>471</width>
-      <height>290</height>
+      <x>470</x>
+      <y>50</y>
+      <width>481</width>
+      <height>281</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -366,7 +366,7 @@ border-radius: 13px;
         </font>
        </property>
        <property name="text">
-        <string>                  4</string>
+        <string>4 Gewinnt</string>
        </property>
       </widget>
      </item>
