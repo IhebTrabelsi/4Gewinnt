@@ -49,6 +49,11 @@ int Stone::getStoneYPos()
     return m_StoneYPos;
 }
 
+QString Stone::getPlayer()
+{
+    return m_Player;
+}
+
 int Stone::getXPosForDrawing()
 {
     switch (m_StoneXPos) {

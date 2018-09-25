@@ -22,7 +22,7 @@ public:
 //******************************************
     int getStoneXPos();
     int getStoneYPos();
-
+    QString getPlayer();
 //----------------- Special XPos and YPos FUNC for Drawing ---------------
 
     int getXPosForDrawing();

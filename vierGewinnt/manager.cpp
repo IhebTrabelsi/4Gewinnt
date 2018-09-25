@@ -156,8 +156,8 @@ void Manager::quit(){
 void Manager::insertStein(quint8 x){
     if(_spiel->_currentPlayer == stein::Player1 && _gameRunning){
         if(! checkValid(x))return;
-		
-		quint8 y = setzeStein(x);
+        quint8 y =0; // just to compile
+        //quint8 y = setzeStein(x);
         //quint32 out = 0x00030100 + x ;
         if(! _serverOrClient)emit networkServer(0x03, 0x01, x);
         else emit networkClient(0x03, 0x01, x);
@@ -185,6 +185,7 @@ quint8 Manager::setStein(quint8 x){
 
 
 void Manager::checkZug(quint8 x){
+    quint8 y =0; // just to compile should be removed
 	if(! checkValid(x)){
         if(_spiel->_grid[x][0] != stein::zero){
             if(! _serverOrClient)emit networkServer(0x11, 0x01, 0x12);
@@ -197,7 +198,7 @@ void Manager::checkZug(quint8 x){
 
 	}
 	else{
-		quint8 y = setzeStein(x);
+//		quint8 y = setzeStein(x);
 		if(checkDraw()){
             emit gameChat("GAME:  Unentschieden!"); //<<std::endl;
             nextRound(false);

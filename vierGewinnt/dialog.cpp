@@ -87,6 +87,28 @@ Stone *Dialog::accessStoneInXYPos(int x_Pos, int Y_Pos)
     return m_StartPointer[x_Pos][Y_Pos];
 }
 
+int Dialog::starPointX()
+{
+    if(m_GridCol==7)
+        return 482;
+    if(m_GridCol==6)
+        return 404;
+    if(m_GridCol==5)
+        return 326;
+}
+
+int Dialog::starPointY()
+{
+    if(m_GridCol==7)
+        return 478;
+    if(m_GridCol==6)
+        return 400;
+    if(m_GridCol==5)
+        return 322;
+}
+
+
+
 
 
 void Dialog::paintEvent(QPaintEvent *e)
@@ -96,32 +118,39 @@ void Dialog::paintEvent(QPaintEvent *e)
     QRect rec(14,10,60,60);
     QPen framepen(Qt::red);
     framepen.setWidth(3);
+    QBrush brush1(Qt::blue);
+    QBrush brush2(Qt::yellow);
     painter.setPen(framepen);
-    QBrush brush(Qt::yellow,Qt::SolidPattern);
+    //QBrush brush(Qt::yellow,Qt::SolidPattern);
 
     for(int i=0 ; i<m_GridCol ;i++){
         for(int j=0 ; j<m_GridRow ;j++){
-        rec.setRect(14+i*78,10+j*78,60,60);
-        painter.drawEllipse(rec);
-        //if(i==1&&j==1)painter.drawRect(rec); this was for testing in which rheinfolge does the circles get drawn
-        if(m_StartPointer[i][j]!=nullptr)
+        rec.setRect(starPointX()-i*78,starPointY()-j*78,60,60);
+        //--------->painter.drawEllipse(rec);
+
+
+    if(m_StartPointer[i][j]!=nullptr)
         {
 
-            painter.fillRect(rec, brush);
+            if(m_StartPointer[i][j]->getPlayer()=="Player 1")
+            {   painter.setBrush(brush1);
+                painter.drawEllipse(rec);
+
+                //for(int k=60 ; k>0 ; k--)
+                //painter.drawEllipse(starPointX()-i*78,starPointY()-j*78,k,k);
+            }
+            else
+            {
+                painter.setBrush(brush2);
+                painter.drawEllipse(rec);
+
+            }
 
 
+        painter.setBrush(Qt::white);
 
-            /*QRect rec2(-42+(m_StartPointer[i][j]->getXPosForDrawing())*60 ,(m_StartPointer [i][j]->getStoneYPos())*60 ,60,60 );
-            painter.drawRect(rec2);*/
-
-            //QRect rec2((-42+i*80),(380-j*80),60,60);
-            //painter.drawRect(rec2);
-            qDebug()<<"Stone XPOS"<<m_StartPointer [i][j]->getXPosForDrawing()<<
-                      "Stone YPOS"<<m_StartPointer [i][j]->getStoneYPos()<<
-                      "Value i"<<i<<"    "<<"Value J"<<j;
-
-            //painter.drawRect(rec);
         }
+    else {painter.drawEllipse(rec);}
 
 
 
@@ -131,32 +160,31 @@ void Dialog::paintEvent(QPaintEvent *e)
 
         }
     }
-
 }
 
 void Dialog::on_bSet1_clicked()
-{   qDebug()<<"Clicked";
+{   //qDebug()<<"Clicked";
     QString _NameHolder;
     if(m_Globalcnt%2)
         _NameHolder="Player 1";
     else
         _NameHolder="Player 2";
-    static int pushCnt_bSet1 = 1;
+    static int pushCnt_bSet1 = 1; //counter to Y position to each column
     if(pushCnt_bSet1<m_GridCol+1){
-        qDebug()<<"entred to if";
+        //------------------------------  ALL NETWORK AND MANAGER STUFF---------------------
         addStoneInXYPos(_NameHolder,m_GridCol-1,pushCnt_bSet1-1);// Badalt el 6 bel 5 juste bech njarreb
         repaint(0,0,800,600);
 
     }
-    qDebug()<<"EXIT FROM if";
+
     if(pushCnt_bSet1<m_GridRow+1)
-    {   qDebug()<<"entred to second IF";
+    {
         Stone* StoneTestPointer;
         StoneTestPointer = accessStoneInXYPos(m_GridCol-1,pushCnt_bSet1-1);
-        qDebug()<<m_GridCol-1<<"    "<<pushCnt_bSet1-1;
-        qDebug()<<StoneTestPointer->getStonePlayer()<<"   "<<
-                  StoneTestPointer->getStoneXPos()<<"    "<<
-                  StoneTestPointer->getStoneYPos();
+        //qDebug()<<m_GridCol-1<<"    "<<pushCnt_bSet1-1;
+        //qDebug()<<StoneTestPointer->getStonePlayer()<<"   "<<
+        //          StoneTestPointer->getStoneXPos()<<"    "<<
+        //          StoneTestPointer->getStoneYPos();
         /*----------------------------------------------------------------------
          *----------------------------------------------------------------------
          *
@@ -289,7 +317,7 @@ void Dialog::on_bSet4_clicked()
 
     }
     //-----------------------TEST of the second button ------------------
-
+    //----------------- THIS IS JUST
     if(pushCnt_bSet4<m_GridRow+1)
     {   qDebug()<<"entred to second IF";
         Stone* StoneTestPointer;
@@ -451,3 +479,7 @@ void Dialog::on_bSet1_pressed()
     qDebug()<<"pressed--------------------------------------------------";
 }
 
+void Dialog::on_pushButton_clicked()
+{
+    repaint(0,0,800,600);
+}

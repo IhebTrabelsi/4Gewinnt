@@ -28,6 +28,8 @@ public:
 
     void addStoneInXYPos(QString playerName ,int x_Pos ,int y_Pos);
     Stone *accessStoneInXYPos(int x_Pos ,int Y_Pos);
+    int starPointX();
+    int starPointY();
 
 
 private:
@@ -41,7 +43,8 @@ private:
     //-------------- Global counter to distinguish number of player-----------------------
     int m_Globalcnt =0;
     Stone* StoneTestPointer;
-    Stone*** m_StartPointer;
+    Stone*** m_StartPointer; // array where every stone is called/stored
+
     //Stone* m_ArrayOfPointersXpos[7];// this will be handled in constructor so it can be deleted after
     //destroying it or( implement ) in destructor
 
@@ -63,6 +66,7 @@ private slots:
     void on_bSet2_clicked();
     void on_bSet3_clicked();
     void on_bSet1_pressed();
+    void on_pushButton_clicked();
 };
 
 #endif // DIALOG_H
