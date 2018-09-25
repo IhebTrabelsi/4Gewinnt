@@ -50,8 +50,8 @@ void Manager::serverRequested(void){
 
 
 
-void Manager::clientReceived(qint8 Cmd, qint8 spalten, qint8 zeilen, qint8 rundenzahl, qint8 beginnender){
-    if(beginnender = 0x00)_beginnender= true;
+void Manager::clientReceived(qint8 Cmd, qint8 spalten, qint8 zeilen, qint8 rundenzahl, qint8 startinPlayer){
+    if(startinPlayer = 0x00)_beginnender= true;
     else _beginnender =false;
 
     _spalten = spalten;
@@ -173,7 +173,7 @@ void Manager::insertStein(quint8 x){
 
 
 
-quint8 Manager::setzeStein(quint8 x){
+quint8 Manager::setStein(quint8 x){
 	quint8 count=0;
     while(_spiel->_grid[x][count] == stein::zero) count++;
 	
