@@ -37,8 +37,6 @@ SOURCES += \
 HEADERS += \
         dialog.h \
     mainwindow.h \
-    dialog.h \
-    ../manager.hpp \
     client.h \
     manager.hpp \
     mytcpserver.h \
@@ -48,10 +46,17 @@ HEADERS += \
     stone.h
 
 FORMS += \
-        dialog.ui \
+    dialog.ui \
     mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+SUBDIRS += \
+    vierGewinnt.pro
+
+DISTFILES += \
+    vierGewinnt.pro.user \
+    README.md
