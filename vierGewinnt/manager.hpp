@@ -151,8 +151,8 @@ public slots:
     void setNextRound(qint8 Cmd, qint8 Rundenummer, qint8 BeginnenderRunde);
 
 
-
 	
+
 public:
     int          _zeilen =7;            /*!< number of lines of the grid to be created for the next instance if Spiel */
     int          _spalten = 7;          /*!< number of columms of the grid to be created for the next instance if Spiel */
@@ -169,15 +169,14 @@ public:
 		
 signals:
         //signalClose();
-        void networkServer(quint8 , quint8, quint8);
-        void networkClient(quint8 , quint8, quint8);
-        void closeSignal();
-        void sendParameters(quint8, quint8, quint8, quint8, quint8, quint8);
-        void paint(quint8 x, quint8 y, stein spieler);
-        void gameChat(QString massage);
-        void signalNextRound(quint8, quint8, quint8);
-
-        void networkConnects(bool);
+        void networkServer(quint8 , quint8, quint8);                                    /*!< to hand over information for creating gameflow-controling signals to networkinstance */
+        void networkClient(quint8 , quint8, quint8);                                    /*!< to hand over information for creating gameflow-controling signals to networkinstance */
+        void closeSignal();                                                             /*!< signal to quit programm */
+        void sendParameters(quint8, quint8, quint8, quint8, quint8, quint8);            /*!< hands parameters to be send over to network instance */
+        void paint(quint8 x, quint8 y, stein spieler);                                  /*!< hands information for newly inserted token to grafic to be displayed */
+        void gameChat(QString massage);                                                 /*!< hands chatmassages to grafic */
+        void signalNextRound(quint8 Cmd, quint8 roundNumber, quint8 startingPlayer);    /*!< hands parameters to be send over to network instance to request a new round-start */
+        void networkConnects(bool);                                                     /*!< hands connection status to network instance */
 };
 
 

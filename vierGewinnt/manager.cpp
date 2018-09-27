@@ -19,23 +19,20 @@ Manager::Manager(QWidget *parent)
 
 Manager::~Manager()
 {
-    //delete ui;
-    //delete _gameChat;
-    //delete _player1Chat;
-    //delete _player2Chat;
+    delete _spiel;
+    if(_server != nullptr)delete _server;
+    if(_client != nullptr)delete _client;
 }
 
 
 
 void Manager::setServerClient (bool serverOrClient ,quint16 port ,QString IP){
-    _serverOrClient = serverOrClient;   // hier finder übergabe von der grafik zur logik
-    if(serverOrClient == false){
-        //creates server and opens it
+    _serverOrClient = serverOrClient;
+    if(serverOrClient == false){    ///creates server and opens it
         _server = new MyTcpServer(port);
         emit networkConnects(serverOrClient);
         _server->openServer();
-        // make a random function who begins and it's given to the other player after
-        srand (time(NULL));
+        srand (time(NULL));  /// to make the starting player random
         int v = rand() % 2 ;
         if( v==1)
         {
@@ -46,7 +43,7 @@ void Manager::setServerClient (bool serverOrClient ,quint16 port ,QString IP){
             _beginnender = false;
 		}
 	}
-	else{
+    else{   ///creates a client and tells it to connenct
         _client = new Client(IP , port);
         emit networkConnects(serverOrClient);
         _client->connectToServer();
@@ -56,8 +53,8 @@ void Manager::setServerClient (bool serverOrClient ,quint16 port ,QString IP){
 
 
 
-void Manager::clientReceived(qint8 Cmd, qint8 spalten, qint8 zeilen, qint8 rundenzahl, qint8 startinPlayer){
-    if(startinPlayer = 0x00)_beginnender= true;
+void Manager::clientReceived(qint8 Cmd, qint8 spalten, qint8 zeilen, qint8 rundenzahl, qint8 startinPlayer){ ///Cmd is unused but there for compatability with signal...
+    if(startinPlayer == 0x00)_beginnender= true;
     else _beginnender =false;
 
     _spalten = spalten;
@@ -85,7 +82,7 @@ void Manager::spielStart(){
 void Manager::handleEvent(quint8 code, quint8 value){
 
     switch(code) {
-        case 0x11 :{
+        case 0x11 :{ ///handles answer to send turn
 
                 switch(value) {
 					case 0x00 :
@@ -93,46 +90,44 @@ void Manager::handleEvent(quint8 code, quint8 value){
 						break;
 						
 					case 0x01 :
-                        emit gameChat("GAME:  Du hast gewonnen!"); //<<std::endl;
+                        emit gameChat("GAME:  Du hast gewonnen!");
 						_spiel->_gewonnenSpieler1 ++;
 						nextZug();
                         nextRound(true);
 						break;
 						
 					case 0x02 :
-                        emit gameChat("GAME:  Unetschieden!"); //<<std::endl;
+                        emit gameChat("GAME:  Unetschieden!");
                         nextRound(false);
 						break;
 						
 					case 0x10 :
-                        emit gameChat("GAME:  Du warst nicht an der Reihe!"); //<<std::endl;
+                        emit gameChat("GAME:  Du warst nicht an der Reihe!");
 						break;
 						
 					case 0x11 :
-                        emit gameChat("GAME:  Außerhalb des Spielfeldes!"); //<<std::endl;
+                        emit gameChat("GAME:  Außerhalb des Spielfeldes!");
 						break;
 						
 					case 0x12 :
-                        emit gameChat("GAME:  Spalte ist voll!"); //<<std::endl;
+                        emit gameChat("GAME:  Spalte ist voll!");
 						break;
 						
 					case 0x13 :
-                        emit gameChat("GAME:  kein laufendes Spiel!"); //<<std::endl;
+                        emit gameChat("GAME:  kein laufendes Spiel!");
 						break;
 					
 					case 0x20 :
-                        emit gameChat("GAME:  Unbekannter Fehler aufgetreten!"); //<<std::endl;
+                        emit gameChat("GAME:  Unbekannter Fehler aufgetreten!");
 						break;
 				}
             break;}
 			
-		case 0x03 :		
-            checkZug(value);
+        case 0x03 :   ///handles incomming opponents turn
+            int x = static_cast<int>(value);
+            checkZug(x);
 			break;
 			
-//		case 0xXXX :
-//			emit gameChat("GAME:  Gegener ist beigetreten."); //<<std::endl;
-//			break;
 	}
 }
 
@@ -142,7 +137,7 @@ void Manager::quit(){
 	if(_gameRunning){
         delete _spiel;
 		_gameRunning = false;
-        emit gameChat("GAME:  Laufendes Spiel abgebrochen!"); //<<std::endl;
+        emit gameChat("GAME:  Laufendes Spiel abgebrochen!");
         if(_serverOrClient){
             _server->disconnectTheClient();
             delete _server;
@@ -162,30 +157,30 @@ void Manager::quit(){
 void Manager::insertStein(int x){
     if(_spiel->_currentPlayer == stein::Player1 && _gameRunning){
         if(! checkValid(x))return;
-        quint8 y =0; // just to compile
-        //quint8 y = setzeStein(x);
-        //quint32 out = 0x00030100 + x ;
+        int y = setStein(x);
+        //quint32 out = 0x00030100 + x ; //legacy: old format for data
         if(! _serverOrClient)emit networkServer(0x03, 0x01, x);
         else emit networkClient(0x03, 0x01, x);
+
 		if(checkWin(x, y)){
-            emit gameChat("GAME:  Du hast gewonnen!"); //<<std::endl;
+            emit gameChat("GAME:  Du hast gewonnen!");
             nextRound(true);
 		}
 	}
 	else{
-        emit gameChat("GAME:  Du bist nicht am Zug!"); //<<std::endl;
+        emit gameChat("GAME:  Du bist nicht am Zug!");
 	}
 }
 
 
 
-int Manager::setSteinint(int x){
+int Manager::setStein(int x){
     int count=0;
     while(_spiel->_grid[x][count] == stein::zero && count < _spiel->_y){++count;}
 
     _spiel->_grid[x][count-1] = _spiel->_currentPlayer;
 
-    //XXXemit paint(x, count, _spiel->_currentPlayer);
+    emit paint(x, count, _spiel->_currentPlayer);
 	return count;
 }
 
@@ -206,13 +201,13 @@ void Manager::checkZug(int x){
 	else{
         int y = setStein(x);
 		if(checkDraw()){
-            emit gameChat("GAME:  Unentschieden!"); //<<std::endl;
+            emit gameChat("GAME:  Unentschieden!");
             nextRound(false);
             if(! _serverOrClient)emit networkServer(0x11, 0x01 ,0x02);
             else emit networkClient(0x11, 0x01 ,0x02);
 		}
 		else if(checkWin(x ,y )){
-            emit gameChat("GAME:  Du hast verlohren!"); //<<std::endl;
+            emit gameChat("GAME:  Du hast verlohren!");
             _spiel->_gewonnenSpieler2 ++;
             if(! _serverOrClient)emit networkServer(0x11, 0x01, 0x01);
             else emit networkClient(0x11, 0x01, 0x01);
@@ -230,12 +225,12 @@ void Manager::checkZug(int x){
 
 bool Manager::checkValid(int x){
     if(x < 0 || x > _spiel->_x-1){
-        emit gameChat("GAME:  Stein wurde neben das Gitter geworfen!"); //<<std::endl;
+        emit gameChat("GAME:  Stein wurde neben das Gitter geworfen!");
         return false;
     }
 
     if(_spiel->_grid[x][0] != stein::zero){
-        emit gameChat("GAME:  Stein wurde in eine bereits volle Spalte geworfen!"); //<<std::endl;
+        emit gameChat("GAME:  Stein wurde in eine bereits volle Spalte geworfen!");
         return false;
     }
 
@@ -323,7 +318,6 @@ bool Manager::checkDraw(){
 
 
 void Manager::nextRound(bool change){
- //XXX
    if(change){
        if(_spiel->_currentPlayer == stein::Player1)_spiel->_currentPlayer = stein::Player2;
        if(_spiel->_currentPlayer == stein::Player2)_spiel->_currentPlayer = stein::Player1;
@@ -333,8 +327,8 @@ void Manager::nextRound(bool change){
    if(_client == nullptr && _spiel->_currentPlayer == stein::Player1)beginnender = 0x00;
    if(_server == nullptr && _spiel->_currentPlayer == stein::Player2)beginnender = 0x00;
    if(_server == nullptr && _spiel->_currentPlayer == stein::Player1)beginnender = 0x01;
-
-   //XXX emit
+   _spiel->_rundennummer++;
+   emit signalNextRound(0x02, _spiel->_rundennummer, beginnender);
 }
 
 
@@ -342,11 +336,11 @@ void Manager::nextRound(bool change){
 void Manager::nextZug(){
     if(_spiel->_currentPlayer == stein::Player1){
         _spiel->_currentPlayer = stein::Player2;
-        emit gameChat("GAME:  Dein Gegner ist jetzt am Zug."); //<<std::endl;
+        emit gameChat("GAME:  Dein Gegner ist jetzt am Zug.");
 	}
 	else{
         _spiel->_currentPlayer = stein::Player1;
-        emit gameChat("GAME:  Du bist jetzt am Zug."); //<<std::endl;
+        emit gameChat("GAME:  Du bist jetzt am Zug.");
 	}
 }
 
