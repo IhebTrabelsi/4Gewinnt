@@ -11,6 +11,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->widget->hide();
     ui->_Port->setMaximum(49150);
     ui->_Port->setMinimum(1024);
+    ui->_Rundenzahl->setMinimum(1);
+    ui->_Rundenzahl->setMaximum(10);
+    ui->_Rundenzahl->setDisabled(true);
     ui->Chat->setReadOnly(true);
     ui->checkBox_2->setChecked(true);
     ui->checkBox->setDisabled(true);
@@ -40,20 +43,50 @@ void MainWindow::on_pushButton_clicked()
     {
        m_ColumNumberToPass = 6;
        m_RowNumberToPass = 6;
+       m_holderFlagbSet7 = true;
     }
     else
     {
        m_ColumNumberToPass = 5;
        m_RowNumberToPass = 5;
+       m_holderFlagbSet6 = true;
+       m_holderFlagbSet7 = true;
     }
+    _rundenzahl = ui->_Port->text().toUShort();
     ui->checkBox->setDisabled(true);
     ui->checkBox_2->setDisabled(true);
     ui->checkBox_3->setDisabled(true);
     ui->pushButton->setDisabled(true);
-    emit signalSetSizeAndSend(m_ColumNumberToPass, m_RowNumberToPass, 1); // add graphic interface
+    ui->_Rundenzahl->setDisabled(true);
+    emit signalSetSizeAndSend(m_ColumNumberToPass, m_RowNumberToPass, _rundenzahl); // add graphic interface
 
+}
+
+void MainWindow::createGrid(quint8 x, quint8 y, bool beginnender)
+{
+    if (x == static_cast<quint8>(5))
+    {
+       m_holderFlagbSet6 = true;
+       m_holderFlagbSet7 = true;
+    }
+    else if(x == static_cast<quint8>(6))
+    {
+        m_holderFlagbSet6 = false;
+        m_holderFlagbSet7 = true;
+
+    }
+    else
+    {
+        m_holderFlagbSet6 = false;
+        m_holderFlagbSet7 = false;
+
+    }
+    m_ColumNumberToPass = x;
+    m_RowNumberToPass = y;
     Game = new Dialog(this ,m_ColumNumberToPass ,m_RowNumberToPass ,m_holderFlagbSet6 ,m_holderFlagbSet7);
     Game->show();
+    emit connectGame();
+
 }
 
 void MainWindow::on_pushButton_Send_clicked()
@@ -71,12 +104,18 @@ void MainWindow::on_pushButton_Connect_clicked()
             return;
         }
         ui->pushButton_Connect->setDisabled(true);
+        ui->_IP->setDisabled(true);
+        ui->_Port->setDisabled(true);
+        ui->_Rundenzahl->setDisabled(true);
         emit createClient(_ServerOrClient, ui->_Port->text().toUShort(), ui->_IP->text());
     }
     else
     {
 
             ui->pushButton_Connect->setDisabled(true);
+            ui->_IP->setDisabled(true);
+            ui->_Port->setDisabled(true);
+            ui->_Rundenzahl->setDisabled(true);
             emit createServer(_ServerOrClient,ui->_Port->text().toUShort(),ui->_IP->text());
     }
 
@@ -130,6 +169,7 @@ void MainWindow::whenConnected()
         ui->checkBox_2->setEnabled(true);
         ui->checkBox_3->setEnabled(true);
         ui->pushButton->setEnabled(true);
+        ui->_Rundenzahl->setEnabled(true);
         emit sendMessage("The Server decides :D choose a grid size and press Let's GO");
     }
     else

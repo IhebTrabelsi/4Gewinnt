@@ -22,6 +22,7 @@ signals:
 
 public slots:
     void networkConnects(bool serverOrClient);
+    void gameConnects();
 
 };
 

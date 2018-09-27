@@ -1,17 +1,12 @@
 #include "manager.hpp"
 
 
-Manager::Manager(QWidget *parent)
-{
-
-	
-
-}
 
 
 
 Manager::~Manager()
 {
+    quit();
     //delete ui;
     //delete _gameChat;
     //delete _player1Chat;
@@ -46,29 +41,49 @@ void Manager::setServerClient (bool serverOrClient ,quint16 port ,QString IP){
 	}
 }
 
-
-
-
-void Manager::clientReceived(qint8 Cmd, qint8 spalten, qint8 zeilen, qint8 rundenzahl, qint8 startinPlayer){
-    if(startinPlayer = 0x00)_beginnender= true;
-    else _beginnender =false;
-
-    _spalten = spalten;
-    _zeilen = zeilen;
+void Manager::setSizeAndSend(quint8 x, quint8 y, quint8 rundenzahl){
+    _spalten = x;
+    _zeilen = y;
     _rundenzahl = rundenzahl;
+    quint8 val;
+    if(_beginnender) val = static_cast<quint8>(0x00);
+    else val = static_cast<quint8>(0x01);
+    emit sendParameters(0x01, 0x04, _spalten, _zeilen, _rundenzahl, val);
+    emit createGrid(_spalten, _zeilen, _beginnender);
+    emit gameChat("GAME:  Ihre Grid- und Rundenauswahl würden and den gegner weiter gegeben");
 
-    if(! _serverOrClient)emit networkServer(0x10, 0x01, 0x00);
-    else emit networkClient(0x10, 0x01, 0x00);
+}
+
+void Manager::clientReceived(quint8 xGridSize, quint8 yGridSize, quint8 Rundenzahl, quint8 Beginnender)
+{
+    if(Beginnender == static_cast<quint8>(0x01))
+        _beginnender= true;
+    else
+        _beginnender =false;
+
+    _spalten = xGridSize;
+    _zeilen = yGridSize;
+    _rundenzahl = Rundenzahl;
+    emit createGrid(_spalten, _zeilen, _beginnender);
+    _gridIsOn = true; // braucht man nur beim server
+    emit sendParameters(0x10, 0x01, 0x00, 0x00, 0x00, 0x00);
+
     spielStart();
 }
 
 
 
 void Manager::spielStart(){
+    // emit addStone(1);
+    _gameRunning = true;
     if(! _beginnender){
+        emit gameChat("Game started du beginnst!!!!!");
+        //emit addStone(0);
         _spiel = new Spiel(_spalten, _zeilen, stein::Player1);
 	}
 	else{
+        emit gameChat("Game started");
+        // emit addStone(0);
         _spiel = new Spiel(_spalten, _zeilen, stein::Player2);
 	}
 }
@@ -78,50 +93,82 @@ void Manager::spielStart(){
 void Manager::handleEvent(quint8 code, quint8 value){
 
     switch(code) {
-        case 0x11 :{
 
-                switch(value) {
-					case 0x00 :
-						nextZug();
-						break;
+        case static_cast<quint8>(0x11) :
+            switch(value)
+            {
+                case static_cast<quint8>(0x00) :
+                    nextZug();
+                    break;
 						
-					case 0x01 :
-                        emit gameChat("GAME:  Du hast gewonnen!"); //<<std::endl;
-						_spiel->_gewonnenSpieler1 ++;
-						nextZug();
-                        nextRound(true);
-						break;
+                case static_cast<quint8>(0x01) :
+                    //_spiel->_gewonnenSpieler1 ++;
+                    nextZug();
+                   // nextRound(true);
+                    break;
 						
-					case 0x02 :
-                        emit gameChat("GAME:  Unetschieden!"); //<<std::endl;
-                        nextRound(false);
-						break;
+                case static_cast<quint8>(0x02) :
+                    emit gameChat("GAME:  Unetschieden!"); //<<std::endl;
+                    //nextRound(false);
+                    break;
 						
-					case 0x10 :
-                        emit gameChat("GAME:  Du warst nicht an der Reihe!"); //<<std::endl;
-						break;
+                case static_cast<quint8>(0x10) :
+                   emit gameChat("GAME:  Du warst nicht an der Reihe!"); //<<std::endl;
+                   break;
 						
-					case 0x11 :
-                        emit gameChat("GAME:  Außerhalb des Spielfeldes!"); //<<std::endl;
-						break;
+                case static_cast<quint8>(0x11) :
+                    emit gameChat("GAME:  Außerhalb des Spielfeldes!"); //<<std::endl;
+                    break;
 						
-					case 0x12 :
-                        emit gameChat("GAME:  Spalte ist voll!"); //<<std::endl;
-						break;
+                case static_cast<quint8>(0x12) :
+                    emit gameChat("GAME:  Spalte ist voll!"); //<<std::endl;
+                    break;
 						
-					case 0x13 :
-                        emit gameChat("GAME:  kein laufendes Spiel!"); //<<std::endl;
-						break;
+                case static_cast<quint8>(0x13) :
+                    emit gameChat("GAME:  kein laufendes Spiel!"); //<<std::endl;
+                    break;
 					
-					case 0x20 :
-                        emit gameChat("GAME:  Unbekannter Fehler aufgetreten!"); //<<std::endl;
-						break;
-				}
-            break;}
+                case static_cast<quint8>(0x20) :
+                    emit gameChat("GAME:  Unbekannter Fehler aufgetreten!"); //<<std::endl;
+                    break;
+            }
+        break;
 			
-		case 0x03 :		
+        case static_cast<quint8>(0x03) :
             checkZug(value);
-			break;
+        break;
+        case static_cast<quint8>(0x10) :
+            switch(value)
+            {
+                case static_cast<quint8>(0x00):
+                    qDebug() << "OK";
+                    spielStart();
+                    emit gameChat("OK");
+                    //OK
+                break;
+
+                case static_cast<quint8>(0x01):
+                    //Abgelehnt oder nicht bereit
+                break;
+
+                case static_cast<quint8>(0x02):
+                    //nicht unterstützt
+                break;
+
+                case static_cast<quint8>(0x03):
+                    //nachricht unvollständig
+                break;
+
+                case static_cast<quint8>(0x04):
+                    //Timeout beim Wartenauf bestätigung
+                break;
+
+                case static_cast<quint8>(0x20):
+                    //Sonstiger Fehler
+                break;
+
+            }
+
 			
 //		case 0xXXX :
 //			emit gameChat("GAME:  Gegener ist beigetreten."); //<<std::endl;
@@ -153,76 +200,74 @@ void Manager::quit(){
 
 
 void Manager::insertStein(quint8 x){
-    if(_spiel->_currentPlayer == stein::Player1 && _gameRunning){
+    if(_spiel->_currentPlayer == stein::Player1 && _gameRunning)
+    {
         if(! checkValid(x))return;
-        quint8 y =0; // just to compile
-        //quint8 y = setzeStein(x);
-        //quint32 out = 0x00030100 + x ;
-        if(! _serverOrClient)emit networkServer(0x03, 0x01, x);
-        else emit networkClient(0x03, 0x01, x);
-		if(checkWin(x, y)){
-            emit gameChat("GAME:  Du hast gewonnen!"); //<<std::endl;
-            nextRound(true);
-		}
-	}
-	else{
-        emit gameChat("GAME:  Du bist nicht am Zug!"); //<<std::endl;
-	}
+        int y = setStein(x);
+        emit sendParameters(0x03, 0x01, x, 0x00, 0x00, 0x00);
+        if(checkWin(x, y))
+        {
+            emit gameChat("GAME:  Du hast gewonnen!");
+            //nextRound(true);
+        }
+    }
+    else{
+        emit gameChat("GAME:  Du bist nicht am Zug!");
+    }
+    gameChat("GAME: You've played now wait for the other Player to Play his role");
+    //check win goes here
 }
 
 
 
-quint8 Manager::setStein(quint8 x){
-	quint8 count=0;
-    while(_spiel->_grid[x][count] == stein::zero) count++;
-	
-	_spiel->_grid[x][count] = _spiel->_currentPlayer;
-    //Zemit paint(x, count, _spiel->_currentPlayer);
-	return count;
+int Manager::setStein(int x){
+
+    int count=0;
+    while(_spiel->_grid[x][count] == stein::zero && count < _spiel->_y){++count;}
+
+    _spiel->_grid[x][count-1] = _spiel->_currentPlayer;
+    emit addStone(x);
+    //emit paint(x, count, _spiel->_currentPlayer);
+    return count-1;
 }
 
 
 
-void Manager::checkZug(quint8 x){
-    quint8 y =0; // just to compile should be removed
-	if(! checkValid(x)){
+void Manager::checkZug(int x){
+    if(! checkValid(x)){
         if(_spiel->_grid[x][0] != stein::zero){
-            if(! _serverOrClient)emit networkServer(0x11, 0x01, 0x12);
-            else emit networkClient(0x11, 0x01, 0x12);
-		}
-		else{
-            if(! _serverOrClient)emit networkServer(0x11, 0x01, 0x11);
-            else emit networkClient(0x11, 0x01, 0x11);
-		}
+        emit sendParameters(0x11, 0x01, 0x12, 0x00, 0x00, 0x00);
+        }
+        else{
+        emit sendParameters(0x11, 0x01, 0x11, 0x00, 0x00, 0x00);
+        }
 
-	}
-	else{
-//		quint8 y = setzeStein(x);
-		if(checkDraw()){
-            emit gameChat("GAME:  Unentschieden!"); //<<std::endl;
+    }
+    else{
+        int y = setStein(x);
+        if(checkDraw()){
+            emit gameChat("GAME:  Unentschieden!");
             nextRound(false);
-            if(! _serverOrClient)emit networkServer(0x11, 0x01 ,0x02);
-            else emit networkClient(0x11, 0x01 ,0x02);
-		}
-		else if(checkWin(x ,y )){
-            emit gameChat("GAME:  Du hast verlohren!"); //<<std::endl;
+            emit sendParameters(0x11, 0x01 ,0x02, 0x00, 0x00, 0x00);
+        }
+        else if(checkWin(x ,y )){
+            emit gameChat("GAME:  Du hast verlohren!");
             _spiel->_gewonnenSpieler2 ++;
-            if(! _serverOrClient)emit networkServer(0x11, 0x01, 0x01);
-            else emit networkClient(0x11, 0x01, 0x01);
-		}
-		else{
-			nextZug();
-            if(! _serverOrClient)emit networkServer(0x11, 0x01, 0x00);
-            else emit networkClient(0x11, 0x01, 0x00);
-		}
+            emit sendParameters(0x11, 0x01, 0x01, 0x00, 0x00, 0x00);
+        }
+        else{
+            nextZug();
+            emit sendParameters(0x11, 0x01, 0x00, 0x00, 0x00, 0x00);
 
-	}
+        }
+
+    }
 }
 
 
 
 bool Manager::checkValid(quint8 x){
-	if(x < 0 || x > _spiel->_x){
+    if(x > _spiel->_x){
         emit gameChat("GAME:  Stein wurde neben das Gitter geworfen!"); //<<std::endl;
 		return false;
 	}
@@ -238,77 +283,80 @@ bool Manager::checkValid(quint8 x){
 
 
 
-bool Manager::checkWin(quint8 x, quint8 y){
-	quint8 count = 1;
-	stein player = _spiel->_grid[x][y];
-	quint8 i;///vertikale
-	quint8 ii;///horizontale
+bool Manager::checkWin(int x, int y){
+    int count = 1;
+    stein player = _spiel->_grid[x][y];
+    int i;///vertikale
+    int ii;///horizontale
 
-	
-	///prüfe vertikale(|)	
-	for(i = x +1;i <= _spiel->_y ;i++)///geht nach unten
-	{
-		if(_spiel->_grid[i][y] == player)count++;
-        if(_spiel->_grid[i][y] != player)break;
-	}
-	if(count >= 4)return true;
-	
-	///prüfe horizontale(-)
-	count = 1;
-    for(ii = y -1; ii >= 0;ii--)///geht nach links
-	{
-		if(_spiel->_grid[x][ii] == player)count++;
-        if(_spiel->_grid[x][ii] != player)i=0;
-	}
-    for(ii = y +1; ii <= _spiel->_x;ii++)///geht nach rechts
-	{
-		if(_spiel->_grid[x][ii] == player)count++;
-        if(_spiel->_grid[x][ii] != player)ii = _spiel->_x +1;
-	}
-	if(count >= 4) return true;
-	
-	///prüfe diagonaleRechts (\)
-	count = 1;
-    for(i = x -1, ii= y -1; i >= 0 && ii >=0; i--, ii--)///geht nach schräg oben links
-	{
-		if(_spiel->_grid[i][ii] == player)count ++;
+
+    ///checks verticaly(|)
+    if(y < _spiel->_y){
+        for(ii = y+1 ;ii < _spiel->_y ;++ii)///looks down
+        {
+          if(_spiel->_grid[x][ii] == player)count++;
+          if(_spiel->_grid[x][ii] != player)break;
+        }
+        if(count >= 4)return true;
+    }
+
+    ///checks horizontaly(-)
+    count = 1;
+    for(i = x -1; i >= 0;--i)///looks left
+    {
+        if(_spiel->_grid[i][y] == player)count++;
+        if(_spiel->_grid[i][y] != player)i=0;
+    }
+    for(i = x +1; i < _spiel->_x;++i)///looks right
+    {
+        if(_spiel->_grid[i][y] == player)count++;
+        if(_spiel->_grid[i][y] != player)i = _spiel->_x +1;
+    }
+    if(count >= 4) return true;
+
+    ///checks right slope (\)
+    count = 1;
+    for(i = x -1, ii= y -1; i >= 0 && ii >=0; --i, --ii)///looks in the direction of upper left corner
+    {
+        if(_spiel->_grid[i][ii] == player)count ++;
         if(_spiel->_grid[i][ii] != player)i = 0;
-	}
-    for(i = x +1, ii = y+1; i <= _spiel->_x && ii <= _spiel->_y ; i++, ii++)///geht nach schräg unten rechts
-	{
-		if(_spiel->_grid[i][ii] == player)count ++;
+    }
+    for(i = x +1, ii = y+1; i < _spiel->_x && ii < _spiel->_y ; ++i, ++ii)///looks in the direction of lower right corner
+    {
+        if(_spiel->_grid[i][ii] == player)count ++;
         if(_spiel->_grid[i][ii] != player)i = _spiel->_x +1;
-	}
-	if(count >= 4) return true;
-	
-	///prüfe diagonaleLinks(/)
-	count = 1;
-    for(i = x -1, ii= y +1; i>=0 && ii <= _spiel->_y;  i--, ii++)///geht nach schräg oben rechts
-	{
-		if(_spiel->_grid[i][ii] == player)count++;
+    }
+    if(count >= 4) return true;
+
+    ///checks left slope(/)
+    count = 1;
+    for(i = x -1, ii= y +1; i>=0 && ii < _spiel->_y;  --i, ++ii)///looks in the direction of lower left corner
+    {
+        if(_spiel->_grid[i][ii] == player)count++;
         if(_spiel->_grid[i][ii] != player)i = 0;
-	}
-    for(i = x +1, ii= y -1;i <= _spiel->_x && ii >=0; i++, ii--)///geht nach schräg unten links
-	{
-		if(_spiel->_grid[i][ii] == player)count++;
+    }
+    for(i = x +1, ii= y -1;i < _spiel->_x && ii >=0; ++i, --ii)///looks in the direction of upper right corner
+    {
+        if(_spiel->_grid[i][ii] == player)count++;
         if(_spiel->_grid[i][ii] != player)ii = 0;
-	}
-	if(count >= 4) return true;
-	
-	return false;
+    }
+    if(count >= 4) return true;
+
+    return false;
 }
 
 
 
+
 bool Manager::checkDraw(){
-	quint8 count = 0;
+    int count = 0;
     for(int i=0; i< _spiel->_x ;i++){
         if(_spiel->_grid[i][0] != stein::zero)
             count++;
-	}
-    if(count < (_spiel->_x -2)) return true;
-		
-	return false;
+    }
+    if(count > (_spiel->_x -1)) return true;
+
+    return false;
 }
 
 
@@ -319,11 +367,11 @@ void Manager::nextRound(bool change){
        if(_spiel->_currentPlayer == stein::Player1)_spiel->_currentPlayer = stein::Player2;
        if(_spiel->_currentPlayer == stein::Player2)_spiel->_currentPlayer = stein::Player1;
    }
-   quint8 beginnender;
-   if(_client == nullptr && _spiel->_currentPlayer == stein::Player2)beginnender = 0x01;
-   if(_client == nullptr && _spiel->_currentPlayer == stein::Player1)beginnender = 0x00;
-   if(_server == nullptr && _spiel->_currentPlayer == stein::Player2)beginnender = 0x00;
-   if(_server == nullptr && _spiel->_currentPlayer == stein::Player1)beginnender = 0x01;
+   //quint8 beginnender;
+   //if(_client == nullptr && _spiel->_currentPlayer == stein::Player2)beginnender = 0x01;
+   //if(_client == nullptr && _spiel->_currentPlayer == stein::Player1)beginnender = 0x00;
+   //if(_server == nullptr && _spiel->_currentPlayer == stein::Player2)beginnender = 0x00;
+   //if(_server == nullptr && _spiel->_currentPlayer == stein::Player1)beginnender = 0x01;
 
    //XXX emit
 }
@@ -342,20 +390,9 @@ void Manager::nextZug(){
 }
 
 
-void Manager::setSizeAndSend(quint8 x, quint8 y, quint8 rundenzahl){
-    _spalten = x;
-    _zeilen = y;
-    _rundenzahl = rundenzahl;
-    quint8 val;
-    if(_beginnender) val = 0x00;
-    else val = 0x01;
-    emit sendParameters(0x01, 0x04, _spalten, _zeilen, _rundenzahl, val);
-    emit gameChat("GAME:  Ihre Grid- und Rundenauswahl würden and den gegner weiter gegeben");
 
-}
-
-void Manager::setNextRound(qint8 Cmd, qint8 Rundenummer, qint8 BeginnenderRunde){
+/*void Manager::setNextRound(quint8 Cmd, quint8 Rundenummer, quint8 BeginnenderRunde){
     if(BeginnenderRunde && _serverOrClient)_spiel->_currentPlayer = stein::Player1;
     else _spiel->_currentPlayer = stein::Player2;
     _spiel->_rundennummer = Rundenummer;
-}
+}*/

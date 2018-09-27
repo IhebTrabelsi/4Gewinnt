@@ -25,7 +25,7 @@ public:
     int starPointY();
 
 
-private:
+public:
     Ui::Dialog *ui;
     int m_GridCol;
     int m_GridRow;
@@ -44,12 +44,13 @@ private:
 
     // Creation mta3 Vector of pointers ysir fi mainwindow ki sayed yekhtar 9adech men cases yheb
     // ama pour le moment lel test na3malha dima 7x7
-
-
+    int _pushCnt_bSet[7];
 
 protected:
     void paintEvent(QPaintEvent *e);
-private slots:
+signals:
+    void sendZug(quint8);
+public slots:
 
     void on_bSet7_clicked();
     void on_bSet4_clicked();
@@ -59,7 +60,8 @@ private slots:
     void on_bSet2_clicked();
     void on_bSet3_clicked();
     void on_bSet1_pressed();
-    void on_pushButton_clicked();
+    void addStone(int x);
+   // void on_pushButton_clicked();
 };
 
 #endif // DIALOG_H

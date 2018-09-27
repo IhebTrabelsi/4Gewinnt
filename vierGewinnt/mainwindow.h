@@ -22,6 +22,7 @@ signals:
     void spieleStein (quint8 x); //bitte überall einbauen wo ein Stein gesetzt werden sollXXX
     void signalQuit();
     void signalSetSizeAndSend(quint8 x, quint8 y, quint8 rundenzahl);
+    void connectGame();
 public slots:
     //void chat(QString massage); //bitte in chat ausgebenXXX
     //void paint(quint8 x, quint8 y, stein spieler); //bitte stein in spielfeld setzenXXX
@@ -47,18 +48,22 @@ public slots:
 
     void whenConnected();
 
-private:  
+    void createGrid(quint8 x, quint8 y,bool beginnender);
+
+
+public:
     Ui::MainWindow *ui;
     Dialog *Game;
     //---------------------COLUMN AND ROW NUMBER TO PASS-----------------
-    qint8 m_ColumNumberToPass=7;
-    qint8 m_RowNumberToPass=7;
+    quint8 m_ColumNumberToPass=7;
+    quint8 m_RowNumberToPass=7;
     //-------------------------------------------------------------------
     //---------------------- PLACE HOLDERS for flags---------------------
     bool m_holderFlagbSet6 = false;
     bool m_holderFlagbSet7 = false;
 
     bool _ServerOrClient= true;
+    quint8 _rundenzahl;
 
 };
 

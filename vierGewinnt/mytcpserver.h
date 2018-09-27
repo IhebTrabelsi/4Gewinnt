@@ -18,18 +18,18 @@ public:
     
 signals:
     void serverIsConnectedToClient();
-    void AntwortAufZug(qint8 Cmd, qint8 Statuscode); // Antwort auf Zug OR recived Zug
-    void AntwortAufAnfrage(qint8 Cmd, qint8 Statuscode); // Antwort auf anfrage
-    void AntwortAufSpielfeldParameter(qint8 Cmd, qint8 xGridSize, qint8 yGridSize, qint8 Rundenzahl, qint8 Beginnender); // Antwort auf spielfeld parameter
-    void AntwortAufRundenbeginn(qint8 Cmd, qint8 Rundenummer, qint8 BeginnenderRunde); //Antwort auf Rundenbeginn
-    void Fehler(qint8 f);
+    void AntwortAufZug(quint8 Cmd, quint8 Statuscode); // Antwort auf Zug OR recived Zug
+    void AntwortAufAnfrage(quint8 Cmd, quint8 Statuscode); // Antwort auf anfrage
+    /*not needed*/void AntwortAufSpielfeldParameter(quint8 Cmd, quint8 xGridSize, quint8 yGridSize, quint8 Rundenzahl, quint8 Beginnender); // Antwort auf spielfeld parameter
+    void AntwortAufRundenbeginn(quint8 Cmd, quint8 Rundenummer, quint8 BeginnenderRunde); //Antwort auf Rundenbeginn
+    void Fehler(quint8 f);
     void sendMessage(QString message);
 public slots:
     //use this functions//////////////////////
     void disconnectTheClient(); // disconnect the client from the server (! client reconnects automatically)
     void openServer(); // opens the Server for possible connections
     void disconnectTheServer(); // kicks the client out and closes the server
-    void sendParameters(qint8 Cmd, qint8 length, qint8 var1, qint8 var2=0, qint8 var3=0, qint8 var4=0);    //sends all Parameters either 1 , 2 or 4 parameters
+    void sendParameters(quint8 Cmd, quint8 length, quint8 var1, quint8 var2=0, quint8 var3=0, quint8 var4=0);    //sends all Parameters either 1 , 2 or 4 parameters
     // don't use this functions///////////////////
     void processRecievedInformation(); // recive Information
     void closeServer(); // no longer accept connections but the client stays in

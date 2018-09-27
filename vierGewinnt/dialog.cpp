@@ -38,8 +38,12 @@ Dialog::Dialog(QWidget *parent, int GridCol, int GridRow ,bool flagbSet6 ,bool f
         for(int j=0 ; j<m_GridRow ; ++j)
             m_StartPointer[i][j] = nullptr ;
     }
+    for(int i=0; i<7; i++)
+    {
+     _pushCnt_bSet[i]=1;
+    }
 
-    qDebug()<< m_GridCol <<"   "<< m_GridRow ;
+   // qDebug()<< m_GridCol <<"   "<< m_GridRow ;
 }
 
 Dialog::~Dialog()
@@ -162,316 +166,68 @@ void Dialog::paintEvent(QPaintEvent *e)
     }
 }
 
-void Dialog::on_bSet1_clicked()
-{   //qDebug()<<"Clicked";
+void Dialog::addStone(int x)
+{
+    qDebug() << "Stone ------------------- added ";
     QString _NameHolder;
     if(m_Globalcnt%2)
         _NameHolder="Player 1";
     else
         _NameHolder="Player 2";
-    static int pushCnt_bSet1 = 1; //counter to Y position to each column
-    if(pushCnt_bSet1<m_GridCol+1){
-        //------------------------------  ALL NETWORK AND MANAGER STUFF---------------------
-        addStoneInXYPos(_NameHolder,m_GridCol-1,pushCnt_bSet1-1);// Badalt el 6 bel 5 juste bech njarreb
-        repaint(0,0,800,600);
-
+    if(_pushCnt_bSet[x]<m_GridCol+1){
+    addStoneInXYPos(_NameHolder,m_GridCol-1-x,_pushCnt_bSet[x]-1);// Badalt el 6 bel 5 juste bech njarreb
+    repaint(0,0,800,600);
     }
-
-    if(pushCnt_bSet1<m_GridRow+1)
+    if(_pushCnt_bSet[x]<m_GridRow+1)
     {
         Stone* StoneTestPointer;
-        StoneTestPointer = accessStoneInXYPos(m_GridCol-1,pushCnt_bSet1-1);
-        //qDebug()<<m_GridCol-1<<"    "<<pushCnt_bSet1-1;
-        //qDebug()<<StoneTestPointer->getStonePlayer()<<"   "<<
-        //          StoneTestPointer->getStoneXPos()<<"    "<<
-        //          StoneTestPointer->getStoneYPos();
-        /*----------------------------------------------------------------------
-         *----------------------------------------------------------------------
-         *
-         *       nokhrej ennik sigarou ou narja3 man9oul l zok ommek el 9a7ba
-         *Le 22/09/2018 20:18 avec Amir Bouazizi à l' EIKON TUM
-         *----------------------------------------------------------------------
-         *----------------------------------------------------------------------
-         *
-
-         *
-         *----------------------------------------------------------------------
-         *---------------------------------------------------------------------*/
+        StoneTestPointer = accessStoneInXYPos(m_GridCol-1-x,_pushCnt_bSet[x]-1);
      }
-    pushCnt_bSet1++;
+    _pushCnt_bSet[x]++;
     m_Globalcnt++;
 
+}
+
+void Dialog::on_bSet1_clicked()
+{
+    //addStone(0);
+    emit sendZug(0);
 }
 
 void Dialog::on_bSet2_clicked()
 {
-    QString _NameHolder;
-    if(m_Globalcnt%2)
-        _NameHolder="Player 1";
-    else
-        _NameHolder="Player 2";
-    static int pushCnt_bSet2 = 1;
-    if(pushCnt_bSet2<m_GridCol+1){
-        qDebug()<<"entred to if";
-        addStoneInXYPos(_NameHolder,m_GridCol-2,pushCnt_bSet2-1);// EL m_GridCol-2<---- el 2 nafs ennoumrou mtaa bouton
-        repaint(0,0,800,600);
-
-    }
-    //-----------------------TEST of the second button ------------------
-
-    if(pushCnt_bSet2<m_GridRow+1)
-    {   qDebug()<<"entred to second IF";
-        Stone* StoneTestPointer;
-        StoneTestPointer = accessStoneInXYPos(m_GridCol-2,pushCnt_bSet2-1);// KIF KIF YETBADEL nafs noumrou l bouton hne
-        qDebug()<<m_GridCol-2<<"    "<<pushCnt_bSet2-1;                    // HNE ZEDA
-        qDebug()<<StoneTestPointer->getStonePlayer()<<"   "<<
-                  StoneTestPointer->getStoneXPos()<<"    "<<
-                  StoneTestPointer->getStoneYPos();
-        /*----------------------------------------------------------------------
-         *----------------------------------------------------------------------
-         *
-         *       nokhrej ennik sigarou ou narja3 man9oul l zok ommek el 9a7ba
-         *Le 22/09/2018 20:18 avec Amir Bouazizi à l' EIKON TUM
-         *----------------------------------------------------------------------
-         *----------------------------------------------------------------------
-         *
-
-         *
-         *----------------------------------------------------------------------
-         *---------------------------------------------------------------------*/
-     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    pushCnt_bSet2++;
-    m_Globalcnt++;
+    //addStone(1);
+    emit sendZug(1);
 }
 
 void Dialog::on_bSet3_clicked()
 {
-    QString _NameHolder;
-    if(m_Globalcnt%2)
-        _NameHolder="Player 1";
-    else
-        _NameHolder="Player 2";
-    static int pushCnt_bSet3 = 1;
-    if(pushCnt_bSet3<m_GridCol+1){
-        qDebug()<<"entred to if";
-        addStoneInXYPos(_NameHolder,m_GridCol-3,pushCnt_bSet3-1);// EL m_GridCol-2<---- el 2 nafs ennoumrou mtaa bouton
-        repaint(0,0,800,600);
-
-    }
-    //-----------------------TEST of the second button ------------------
-
-    if(pushCnt_bSet3<m_GridRow+1)
-    {   qDebug()<<"entred to second IF";
-        Stone* StoneTestPointer;
-        StoneTestPointer = accessStoneInXYPos(m_GridCol-3,pushCnt_bSet3-1);// KIF KIF YETBADEL nafs noumrou l bouton hne
-        qDebug()<<m_GridCol-3<<"    "<<pushCnt_bSet3-1;                    // HNE ZEDA
-        qDebug()<<StoneTestPointer->getStonePlayer()<<"   "<<
-                  StoneTestPointer->getStoneXPos()<<"    "<<
-                  StoneTestPointer->getStoneYPos();
-        /*----------------------------------------------------------------------
-         *----------------------------------------------------------------------
-         *
-         *       nokhrej ennik sigarou ou narja3 man9oul l zok ommek el 9a7ba
-         *Le 22/09/2018 20:18 avec Amir Bouazizi à l' EIKON TUM
-         *----------------------------------------------------------------------
-         *----------------------------------------------------------------------
-         *
-
-         *
-         *----------------------------------------------------------------------
-         *---------------------------------------------------------------------*/
-     }
-
-
-    pushCnt_bSet3++;
-    m_Globalcnt++;
+    //addStone(2);
+    emit sendZug(2);
 }
 
 void Dialog::on_bSet4_clicked()
 {
-    QString _NameHolder;
-    if(m_Globalcnt%2)
-        _NameHolder="Player 1";
-    else
-        _NameHolder="Player 2";
-    static int pushCnt_bSet4 = 1;
-    if(pushCnt_bSet4<m_GridCol+1){
-        qDebug()<<"entred to if";
-        addStoneInXYPos(_NameHolder,m_GridCol-4,pushCnt_bSet4-1);// EL m_GridCol-2<---- el 2 nafs ennoumrou mtaa bouton
-        repaint(0,0,800,600);
-
-    }
-    //-----------------------TEST of the second button ------------------
-    //----------------- THIS IS JUST
-    if(pushCnt_bSet4<m_GridRow+1)
-    {   qDebug()<<"entred to second IF";
-        Stone* StoneTestPointer;
-        StoneTestPointer = accessStoneInXYPos(m_GridCol-4,pushCnt_bSet4-1);// KIF KIF YETBADEL nafs noumrou l bouton hne
-        qDebug()<<m_GridCol-4<<"    "<<pushCnt_bSet4-1;                    // HNE ZEDA
-        qDebug()<<StoneTestPointer->getStonePlayer()<<"   "<<
-                  StoneTestPointer->getStoneXPos()<<"    "<<
-                  StoneTestPointer->getStoneYPos();
-        /*----------------------------------------------------------------------
-         *----------------------------------------------------------------------
-         *
-         *       nokhrej ennik sigarou ou narja3 man9oul l zok ommek el 9a7ba
-         *Le 22/09/2018 20:18 avec Amir Bouazizi à l' EIKON TUM
-         *----------------------------------------------------------------------
-         *----------------------------------------------------------------------
-         *
-
-         *
-         *----------------------------------------------------------------------
-         *---------------------------------------------------------------------*/
-     }
-
-
-    pushCnt_bSet4++;
-    m_Globalcnt++;
+    //addStone(3);
+    emit sendZug(3);
 }
 
 void Dialog::on_bSet5_clicked()
 {
-    QString _NameHolder;
-    if(m_Globalcnt%2)
-        _NameHolder="Player 1";
-    else
-        _NameHolder="Player 2";
-    static int pushCnt_bSet5 = 1;
-    if(pushCnt_bSet5<m_GridCol+1){
-        qDebug()<<"entred to if";
-        addStoneInXYPos(_NameHolder,m_GridCol-5,pushCnt_bSet5-1);// EL m_GridCol-2<---- el 2 nafs ennoumrou mtaa bouton
-        repaint(0,0,800,600);
-
-    }
-    //-----------------------TEST of the second button ------------------
-
-    if(pushCnt_bSet5<m_GridRow+1)
-    {   qDebug()<<"entred to second IF";
-        Stone* StoneTestPointer;
-        StoneTestPointer = accessStoneInXYPos(m_GridCol-5,pushCnt_bSet5-1);// KIF KIF YETBADEL nafs noumrou l bouton hne
-        qDebug()<<m_GridCol-5<<"    "<<pushCnt_bSet5-1;                    // HNE ZEDA
-        qDebug()<<StoneTestPointer->getStonePlayer()<<"   "<<
-                  StoneTestPointer->getStoneXPos()<<"    "<<
-                  StoneTestPointer->getStoneYPos();
-        /*----------------------------------------------------------------------
-         *----------------------------------------------------------------------
-         *
-         *       nokhrej ennik sigarou ou narja3 man9oul l zok ommek el 9a7ba
-         *Le 22/09/2018 20:18 avec Amir Bouazizi à l' EIKON TUM
-         *----------------------------------------------------------------------
-         *----------------------------------------------------------------------
-         *
-
-         *
-         *----------------------------------------------------------------------
-         *---------------------------------------------------------------------*/
-     }
-
-
-    pushCnt_bSet5++;
-    m_Globalcnt++;
+    //addStone(4);
+    emit sendZug(4);
 }
 
 void Dialog::on_bSet6_clicked()
 {
-    QString _NameHolder;
-    if(m_Globalcnt%2)
-        _NameHolder="Player 1";
-    else
-        _NameHolder="Player 2";
-    static int pushCnt_bSet6 = 1;
-    if(pushCnt_bSet6<m_GridCol+1){
-        qDebug()<<"entred to if";
-        addStoneInXYPos(_NameHolder,m_GridCol-6,pushCnt_bSet6-1);// EL m_GridCol-2<---- el 2 nafs ennoumrou mtaa bouton
-        repaint(0,0,800,600);
-
-    }
-    //-----------------------TEST of the second button ------------------
-
-    if(pushCnt_bSet6<m_GridRow+1)
-    {   qDebug()<<"entred to second IF";
-        Stone* StoneTestPointer;
-        StoneTestPointer = accessStoneInXYPos(m_GridCol-6,pushCnt_bSet6-1);// KIF KIF YETBADEL nafs noumrou l bouton hne
-        qDebug()<<m_GridCol-6<<"    "<<pushCnt_bSet6-1;                    // HNE ZEDA
-        qDebug()<<StoneTestPointer->getStonePlayer()<<"   "<<
-                  StoneTestPointer->getStoneXPos()<<"    "<<
-                  StoneTestPointer->getStoneYPos();
-        /*----------------------------------------------------------------------
-         *----------------------------------------------------------------------
-         *
-         *       nokhrej ennik sigarou ou narja3 man9oul l zok ommek el 9a7ba
-         *Le 22/09/2018 20:18 avec Amir Bouazizi à l' EIKON TUM
-         *----------------------------------------------------------------------
-         *----------------------------------------------------------------------
-         *
-
-         *
-         *----------------------------------------------------------------------
-         *---------------------------------------------------------------------*/
-     }
-
-
-    pushCnt_bSet6++;
-    m_Globalcnt++;
+    //addStone(5);
+    emit sendZug(5);
 }
 
 void Dialog::on_bSet7_clicked()
 {
-    QString _NameHolder;
-    if(m_Globalcnt%2)
-        _NameHolder="Player 1";
-    else
-        _NameHolder="Player 2";
-    static int pushCnt_bSet7 = 1;
-    if(pushCnt_bSet7<m_GridCol+1){
-        qDebug()<<"entred to if";
-        addStoneInXYPos(_NameHolder,m_GridCol-7,pushCnt_bSet7-1);// EL m_GridCol-2<---- el 2 nafs ennoumrou mtaa bouton
-        repaint(0,0,800,600);
-
-    }
-    //-----------------------TEST of the second button ------------------
-
-    if(pushCnt_bSet7<m_GridRow+1)
-    {   qDebug()<<"entred to second IF";
-        Stone* StoneTestPointer;
-        StoneTestPointer = accessStoneInXYPos(m_GridCol-7,pushCnt_bSet7-1);// KIF KIF YETBADEL nafs noumrou l bouton hne
-        qDebug()<<m_GridCol-7<<"    "<<pushCnt_bSet7-1;                    // HNE ZEDA
-        qDebug()<<StoneTestPointer->getStonePlayer()<<"   "<<
-                  StoneTestPointer->getStoneXPos()<<"    "<<
-                  StoneTestPointer->getStoneYPos();
-        /*----------------------------------------------------------------------
-         *----------------------------------------------------------------------
-         *
-         *       nokhrej ennik sigarou ou narja3 man9oul l zok ommek el 9a7ba
-         *Le 22/09/2018 20:18 avec Amir Bouazizi à l' EIKON TUM
-         *----------------------------------------------------------------------
-         *----------------------------------------------------------------------
-         *
-
-         *
-         *----------------------------------------------------------------------
-         *---------------------------------------------------------------------*/
-     }
-
-
-    pushCnt_bSet7++;
-    m_Globalcnt++;
+    //addStone(6);
+    emit sendZug(6);
 }
 
 void Dialog::on_bSet1_pressed()
@@ -479,7 +235,7 @@ void Dialog::on_bSet1_pressed()
     qDebug()<<"pressed--------------------------------------------------";
 }
 
-void Dialog::on_pushButton_clicked()
-{
-    repaint(0,0,800,600);
-}
+//void Dialog::on_pushButton_clicked()
+//{
+//    repaint(0,0,800,600);
+//}
