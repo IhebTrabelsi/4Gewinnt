@@ -179,19 +179,19 @@ void Manager::insertStein(int x){
 
 
 
-int Manager::setSteinint x){
-	quint8 count=0;
-    while(_spiel->_grid[x][count] == stein::zero) count++;
-	
-	_spiel->_grid[x][count] = _spiel->_currentPlayer;
-    //Zemit paint(x, count, _spiel->_currentPlayer);
+int Manager::setSteinint(int x){
+    int count=0;
+    while(_spiel->_grid[x][count] == stein::zero && count < _spiel->_y){++count;}
+
+    _spiel->_grid[x][count-1] = _spiel->_currentPlayer;
+
+    //XXXemit paint(x, count, _spiel->_currentPlayer);
 	return count;
 }
 
 
 
 void Manager::checkZug(int x){
-    quint8 y =0; // just to compile should be removed
 	if(! checkValid(x)){
         if(_spiel->_grid[x][0] != stein::zero){
             if(! _serverOrClient)emit networkServer(0x11, 0x01, 0x12);
@@ -204,7 +204,7 @@ void Manager::checkZug(int x){
 
 	}
 	else{
-//		quint8 y = setzeStein(x);
+        int y = setStein(x);
 		if(checkDraw()){
             emit gameChat("GAME:  Unentschieden!"); //<<std::endl;
             nextRound(false);
@@ -229,93 +229,95 @@ void Manager::checkZug(int x){
 
 
 bool Manager::checkValid(int x){
-	if(x < 0 || x > _spiel->_x){
+    if(x < 0 || x > _spiel->_x-1){
         emit gameChat("GAME:  Stein wurde neben das Gitter geworfen!"); //<<std::endl;
-		return false;
-	}
-	
+        return false;
+    }
+
     if(_spiel->_grid[x][0] != stein::zero){
         emit gameChat("GAME:  Stein wurde in eine bereits volle Spalte geworfen!"); //<<std::endl;
-		return false;
-	}
-	
-	return true;	
-	
+        return false;
+    }
+
+    return true;
+
 }
 
 
 
 bool Manager::checkWin(int x, int y){
-	quint8 count = 1;
-	stein player = _spiel->_grid[x][y];
-	quint8 i;///vertikale
-	quint8 ii;///horizontale
+    int count = 1;
+    stein player = _spiel->_grid[x][y];
+    int i;///vertikale
+    int ii;///horizontale
 
-	
-	///prüfe vertikale(|)	
-	for(i = x +1;i <= _spiel->_y ;i++)///geht nach unten
-	{
-		if(_spiel->_grid[i][y] == player)count++;
-        if(_spiel->_grid[i][y] != player)break;
-	}
-	if(count >= 4)return true;
-	
-	///prüfe horizontale(-)
-	count = 1;
-    for(ii = y -1; ii >= 0;ii--)///geht nach links
-	{
-		if(_spiel->_grid[x][ii] == player)count++;
-        if(_spiel->_grid[x][ii] != player)i=0;
-	}
-    for(ii = y +1; ii <= _spiel->_x;ii++)///geht nach rechts
-	{
-		if(_spiel->_grid[x][ii] == player)count++;
-        if(_spiel->_grid[x][ii] != player)ii = _spiel->_x +1;
-	}
-	if(count >= 4) return true;
-	
-	///prüfe diagonaleRechts (\)
-	count = 1;
-    for(i = x -1, ii= y -1; i >= 0 && ii >=0; i--, ii--)///geht nach schräg oben links
-	{
-		if(_spiel->_grid[i][ii] == player)count ++;
+
+    ///checks verticaly(|)
+    if(y < _spiel->_y){
+        for(ii = y+1 ;ii < _spiel->_y ;++ii)///looks down
+        {
+          if(_spiel->_grid[x][ii] == player)count++;
+          if(_spiel->_grid[x][ii] != player)break;
+        }
+        if(count >= 4)return true;
+    }
+
+    ///checks horizontaly(-)
+    count = 1;
+    for(i = x -1; i >= 0;--i)///looks left
+    {
+        if(_spiel->_grid[i][y] == player)count++;
+        if(_spiel->_grid[i][y] != player)i=0;
+    }
+    for(i = x +1; i < _spiel->_x;++i)///looks right
+    {
+        if(_spiel->_grid[i][y] == player)count++;
+        if(_spiel->_grid[i][y] != player)i = _spiel->_x +1;
+    }
+    if(count >= 4) return true;
+
+    ///checks right slope (\)
+    count = 1;
+    for(i = x -1, ii= y -1; i >= 0 && ii >=0; --i, --ii)///looks in the direction of upper left corner
+    {
+        if(_spiel->_grid[i][ii] == player)count ++;
         if(_spiel->_grid[i][ii] != player)i = 0;
-	}
-    for(i = x +1, ii = y+1; i <= _spiel->_x && ii <= _spiel->_y ; i++, ii++)///geht nach schräg unten rechts
-	{
-		if(_spiel->_grid[i][ii] == player)count ++;
+    }
+    for(i = x +1, ii = y+1; i < _spiel->_x && ii < _spiel->_y ; ++i, ++ii)///looks in the direction of lower right corner
+    {
+        if(_spiel->_grid[i][ii] == player)count ++;
         if(_spiel->_grid[i][ii] != player)i = _spiel->_x +1;
-	}
-	if(count >= 4) return true;
-	
-	///prüfe diagonaleLinks(/)
-	count = 1;
-    for(i = x -1, ii= y +1; i>=0 && ii <= _spiel->_y;  i--, ii++)///geht nach schräg oben rechts
-	{
-		if(_spiel->_grid[i][ii] == player)count++;
+    }
+    if(count >= 4) return true;
+
+    ///checks left slope(/)
+    count = 1;
+    for(i = x -1, ii= y +1; i>=0 && ii < _spiel->_y;  --i, ++ii)///looks in the direction of lower left corner
+    {
+        if(_spiel->_grid[i][ii] == player)count++;
         if(_spiel->_grid[i][ii] != player)i = 0;
-	}
-    for(i = x +1, ii= y -1;i <= _spiel->_x && ii >=0; i++, ii--)///geht nach schräg unten links
-	{
-		if(_spiel->_grid[i][ii] == player)count++;
+    }
+    for(i = x +1, ii= y -1;i < _spiel->_x && ii >=0; ++i, --ii)///looks in the direction of upper right corner
+    {
+        if(_spiel->_grid[i][ii] == player)count++;
         if(_spiel->_grid[i][ii] != player)ii = 0;
-	}
-	if(count >= 4) return true;
-	
-	return false;
+    }
+    if(count >= 4) return true;
+
+    return false;
 }
 
 
 
 bool Manager::checkDraw(){
-	quint8 count = 0;
+    int count = 0;
     for(int i=0; i< _spiel->_x ;i++){
         if(_spiel->_grid[i][0] != stein::zero)
             count++;
-	}
-    if(count < (_spiel->_x -2)) return true;
-		
-	return false;
+    }
+    if(count > (_spiel->_x -1)) return true;
+
+    return false;
 }
 
 
@@ -357,7 +359,7 @@ void Manager::setSizeAndSend(quint8 x, quint8 y, quint8 rundenzahl){
     if(_beginnender) val = 0x00;
     else val = 0x01;
     emit sendParameters(0x01, 0x04, _spalten, _zeilen, _rundenzahl, val);
-    emit gameChat("GAME:  Ihre Grid- und Rundenauswahl würden and den gegner weiter gegeben");
+    emit gameChat("GAME:  Ihre Grid- und Rundenauswahl wurden and den gegner weiter gegeben.");
 
 }
 

@@ -185,9 +185,9 @@ void Manager::insertStein(int x){
 
 
 int Manager::setStein(int x){
-    //std::cout<<"setStein"<<std::endl;
+    //std::cout<<"setStein"<<std::endl;  //for testing
     int count=0;
-    //std::cout<<x<<std::endl;
+    //std::cout<<x<<std::endl; //for testing
     while(_spiel->_grid[x][count] == stein::zero && count < _spiel->_y){++count;}
 
     //std::cout << "before: " << enum2str(_spiel->_grid[x][count]) << std::endl; //for testing
