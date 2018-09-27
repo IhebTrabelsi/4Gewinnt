@@ -10,6 +10,8 @@
 /**
  * @file main.cpp mainfuction for corelogik test
  * @author Simon Näther
+ *
+ * many warnigs due to nutering of funtions (no "emit singnal")
  **/
 
 int main(int argc, char *argv[])

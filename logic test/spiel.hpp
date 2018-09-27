@@ -27,14 +27,13 @@ public:
     ~Spiel();
 
 private:
-    quint8  	  _rundennummer =1;
-    stein   	  _currentPlayer = stein::Player1;
-    std::vector<std::vector<stein>> _grid;
-    //stein[X_size][Y_size]   _grid = {zero};
-    const quint8  _x;
-    const quint8  _y;
-    quint8  	  _gewonnenSpieler1 =0;
-    quint8  	  _gewonnenSpieler2 =0;
+    int                              _rundennummer =1;     /*!< number of round that is currently played */
+    stein                            _currentPlayer;       /*!< flag to mark current player */
+    std::vector<std::vector<stein>>  _grid;                /*!< to represent the playing field */
+    const int                        _x;                   /*!< number of columms */
+    const int                        _y;                   /*!< number of rows */
+    int                              _gewonnenSpieler1 =0; /*!< counter for won games by player1 */
+    int                              _gewonnenSpieler2 =0; /*!< counter for won games by player2 */
 };
 
 

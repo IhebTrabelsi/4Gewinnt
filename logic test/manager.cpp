@@ -240,8 +240,8 @@ void Manager::checkZug(quint8 x){
 
 
 
-bool Manager::checkValid(quint8 x){
-	if(x < 0 || x > _spiel->_x){
+bool Manager::checkValid(int x){
+    if(x < 0 || x > _spiel->_x-1){
        ;//emit gameChat("GAME:  Stein wurde neben das Gitter geworfen!"); //<<std::endl;
 		return false;
 	}
@@ -375,16 +375,16 @@ void Manager::setNextRound(qint8 Cmd, qint8 Rundenummer, qint8 BeginnenderRunde)
 }
 
 void Manager::printGrid(void){
-    //std::cout << "element00 " << enum2str(_spiel->_grid[0][0]) << std::endl;
+    //std::cout << "element00 " << enum2str(_spiel->_grid[0][0]) << std::endl; //debug
     for(int ii=1; ii<= _spiel->_x; ii++)std::cout<<"  "<< ii<< "  "<<std::flush;
     std::cout<<std::endl;
     for(int ii=0; ii< _spiel->_x; ii++)std::cout<<"-----"<<std::flush;
     std::cout<<std::endl;
-    for(int i =0; i< _spiel->_y; i++){
+    for(int i =0; i< _spiel->_y; i++){       ///parses grid line after line
         for(int ii=0; ii< _spiel->_x; ii++){
             if(_spiel->_grid[ii][i] == stein::Player1)std::cout<<"  A  "<<std::flush;
             else if(_spiel->_grid[ii][i] == stein::Player2)std::cout<<"  B  "<<std::flush;
-            else if(_spiel->_grid[ii][i] == stein::zero)std::cout<<"  X  "<<std::flush;
+            else if(_spiel->_grid[ii][i] == stein::zero)std::cout<<"  O  "<<std::flush;
         }
         std::cout<<std::endl;
         std::cout<<std::endl;
@@ -398,14 +398,8 @@ bool Manager::testSinglePlayer(void){
     if(_spiel->_currentPlayer == stein::Player1)std::cout<<"Player A please insert a token:"<<std::endl;
     else std::cout<<"Player B please insert a token:"<<std::endl;
 
-    int number;  //cin cant use quint8!!! int<-->quint8 bad!
-    while(!(std::cin>> number)){
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "A number please.  Try again: ";
-        }
-    int x = number-1;
-    //std::cout << x << std::endl;
+    int x = getNumber()-1;
+    //std::cout << x << std::endl; //debug
     if(checkValid(x)){
         bool flag = insertSteinSingle(x);
         printGrid();
@@ -420,14 +414,14 @@ bool Manager::testSinglePlayer(void){
 
 void Manager::setSingleplayer(void){
     std::cout<<"How many collums is the game soppused to have?"<<std::endl;
-    //std::cout << number << std::endl;
+    //std::cout << number << std::endl; //debug
     _spalten = getNumber();
     std::cout<<"How many lines is the game soppused to have?"<<std::endl;
-    //std::cin>>number;
     _zeilen = getNumber();
-    //std::cout<<"Would you like to begin? (0->no 1->yes)"<<std::endl;
-    //std::cin>>number;
-    //if(number==0)_beginnender = false;
+    /*std::cin>>number;
+    std::cout<<"Would you like to begin? (0->no 1->yes)"<<std::endl; //old stuff
+    std::cin>>number;
+    if(number==0)_beginnender = false;*/
     _beginnender = false;
     spielStart();
 }
@@ -443,12 +437,11 @@ std::string Manager::enum2str(stein e){
     if (e == stein::Player2){
         return "player2";
     }
+    else return "no stein";
 }
 
 bool Manager::insertSteinSingle(int x){
     int y = setStein(x);
-
-
 
     if(checkDraw()){
         std::cout<<"It's a Draw! (no Trap this time Ackbar...)"<<std::endl;
@@ -464,7 +457,7 @@ bool Manager::insertSteinSingle(int x){
 }
 
 int Manager::getNumber(){
-    int number;  //cin cant use quint8!!! int<-->quint8 bad!
+    int number;  ///cin cant use quint8!!! int<-->quint8 bad!
     while(!(std::cin>> number)){
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');

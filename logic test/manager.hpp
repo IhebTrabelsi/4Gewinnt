@@ -104,7 +104,7 @@ public slots:
      *  @param[in] x-coordinate of token to be placed
      *  @return true turn ok
      **/
-	bool checkValid(quint8 x);
+    bool checkValid(int x);
 
 	/**
      *  @brief checks if current turn is a winning one
@@ -191,17 +191,17 @@ public slots:
 
 	
 private:
-		quint8  _zeilen =7;
-		quint8  _spalten = 7;
-		quint8  _rundenzahl = 3;
-        bool    _beginnender;
-        bool    _serverOrClient; // 0x00 Server / 0x01 Client
-        QString _IPadresse;
-        QString _port;
-		bool    _gameRunning;
-        Spiel*   _spiel;
-        Client* _client = nullptr;
-        MyTcpServer* _server = nullptr;
+        int  _zeilen =7;                /*!< number of lines of the grid to be created for the next instance if Spiel */
+        int  _spalten = 7;              /*!< number of columms of the grid to be created for the next instance if Spiel */
+        int  _rundenzahl = 3;           /*!< how many rounds should be played */
+        bool    _beginnender;           /*!< to determine the starting player */
+        bool    _serverOrClient;        /*!< for creating a server or client at start: false server, true client */
+        QString _IPadresse;             /*!< holds ip network instance */
+        QString _port;                  /*!< holds port for network instance */
+        bool    _gameRunning;           /*!< flag for running game */
+        Spiel*   _spiel;                /*!< pointer for datacontainer of running game */
+        Client* _client = nullptr;      /*!< pointer for network instance */
+        MyTcpServer* _server = nullptr; /*!< pointer for network instance */
 
 
 
