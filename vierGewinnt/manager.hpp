@@ -49,10 +49,10 @@ public slots:
      **/
 	void spielStart();
 
-    /**
-     *  @brief sends gamedata to a recently connected client
-     **/
-    //void serverRequested(void); // not needed anymore check setSizeAndSend(quint8 x, quint8 y, quint8 rundenzahl)
+  //  /**
+  //   *  @brief sends gamedata to a recently connected client (obsolete)
+  //   **/
+  //  void serverRequested(void); // made obsolete by setSizeAndSend(quint8 x, quint8 y, quint8 rundenzahl)
 
     /**
      *  @brief saves gamedate send from another server
@@ -83,22 +83,22 @@ public slots:
      *
      *  @param[in] x-coordinate of token to be placed
      **/
-	void insertStein(quint8 x);
+    void insertStein(int x);
 
 	/**
-     *  @brief setzt Stein in Gitter und gibt y-Wert zurück
+     *  @brief sets toke in grid and returns y-coordinate of set token
      *
      *  @param[in] x-coordinate of token to be placed
      *  @return y-coordinate of token to be placed
      **/
-    quint8 setStein(quint8 x);
+    int setStein(int x);
 
 	/**
      *  @brief handles opponents turn
      *
      *  @param[in] x-coordinate of placed token
      **/
-	void checkZug(quint8 x);
+    void checkZug(int x);
 
 	/**
      *  @brief checks if a turn is allowed
@@ -106,7 +106,7 @@ public slots:
      *  @param[in] x-coordinate of token to be placed
      *  @return true turn ok
      **/
-	bool checkValid(quint8 x);
+    bool checkValid(int x);
 
 	/**
      *  @brief checks if current turn is a winning one
@@ -115,7 +115,7 @@ public slots:
      *  @param[in] y-coordinate of newly placed token
      *  @return true for a win
      **/
-	bool checkWin(quint8 x, quint8 y);
+    bool checkWin(int x, int y);
 
 	/**
      *  @brief checks if current turn forces a draw
@@ -154,21 +154,17 @@ public slots:
 
 	
 public:
-		quint8  _zeilen =7;
-		quint8  _spalten = 7;
-		quint8  _rundenzahl = 3;
-		bool    _beginnender;
-        bool    _serverOrClient; // 0x00 Server / 0x01 Client
-        QString _IPadresse;
-        QString _port;
-		bool    _gameRunning;
-        Spiel*   _spiel;
-        Client* _client = nullptr;
-        MyTcpServer* _server = nullptr;
-
-//		MyStream *_gameChat;
-//		MyStream *_player1Chat;
-//		MyStream *_player2Chat;
+    int          _zeilen =7;            /*!< number of lines of the grid to be created for the next instance if Spiel */
+    int          _spalten = 7;          /*!< number of columms of the grid to be created for the next instance if Spiel */
+    int          _rundenzahl = 3;       /*!< how many rounds should be played */
+    bool         _beginnender;          /*!< to determine the starting player */
+    bool         _serverOrClient;       /*!< for creating a server or client at start: false server, true client */
+    QString      _IPadresse;            /*!< holds ip network instance */
+    QString      _port;                 /*!< holds port for network instance */
+    bool         _gameRunning;          /*!< flag for running game */
+    Spiel*       _spiel;                /*!< pointer for datacontainer of running game */
+    Client*      _client = nullptr;     /*!< pointer for network instance */
+    MyTcpServer* _server = nullptr;     /*!< pointer for network instance */
 		
 		
 signals:

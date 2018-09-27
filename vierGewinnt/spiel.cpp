@@ -1,5 +1,11 @@
 #include "spiel.hpp"
 
+
+/**
+ * @file spiel.cpp implementation of Spiel class
+ * @author Simon Näther
+ **/
+
 Spiel::Spiel(quint8 x, quint8 y,stein startPlayer )
 :_x(x), _y(y), _currentPlayer(startPlayer)
 {

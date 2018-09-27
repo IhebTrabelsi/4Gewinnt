@@ -1,6 +1,13 @@
 #include "manager.hpp"
 
 
+/**
+ * @file manager.cpp implementation of Manager class functions
+ * @author Simon Näther
+ **/
+
+
+
 Manager::Manager(QWidget *parent)
 {
 
@@ -152,7 +159,7 @@ void Manager::quit(){
 
 
 
-void Manager::insertStein(quint8 x){
+void Manager::insertStein(int x){
     if(_spiel->_currentPlayer == stein::Player1 && _gameRunning){
         if(! checkValid(x))return;
         quint8 y =0; // just to compile
@@ -172,7 +179,7 @@ void Manager::insertStein(quint8 x){
 
 
 
-quint8 Manager::setStein(quint8 x){
+int Manager::setSteinint x){
 	quint8 count=0;
     while(_spiel->_grid[x][count] == stein::zero) count++;
 	
@@ -183,7 +190,7 @@ quint8 Manager::setStein(quint8 x){
 
 
 
-void Manager::checkZug(quint8 x){
+void Manager::checkZug(int x){
     quint8 y =0; // just to compile should be removed
 	if(! checkValid(x)){
         if(_spiel->_grid[x][0] != stein::zero){
@@ -221,7 +228,7 @@ void Manager::checkZug(quint8 x){
 
 
 
-bool Manager::checkValid(quint8 x){
+bool Manager::checkValid(int x){
 	if(x < 0 || x > _spiel->_x){
         emit gameChat("GAME:  Stein wurde neben das Gitter geworfen!"); //<<std::endl;
 		return false;
@@ -238,7 +245,7 @@ bool Manager::checkValid(quint8 x){
 
 
 
-bool Manager::checkWin(quint8 x, quint8 y){
+bool Manager::checkWin(int x, int y){
 	quint8 count = 1;
 	stein player = _spiel->_grid[x][y];
 	quint8 i;///vertikale

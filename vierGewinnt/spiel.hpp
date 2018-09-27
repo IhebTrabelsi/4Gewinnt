@@ -4,31 +4,35 @@
 #include <QtGlobal>
 #include <vector>
 
-enum class stein : char { Player1 , Player2 , zero };
+/**
+ * @file spiel.hpp headerfile for Spiel class
+ * @author Simon Näther
+ **/
+
+enum class stein : char { Player1 , Player2 , zero }; /*!< tokens for the grid */
 
 /**
- *  @brief Spiel stellt den Spielstand dar
+ *  @brief represents the gamestate as a datacontainer
  */
-//template<size_t X_size, size_t Y_size>
+//template<size_t X_size, size_t Y_size>  //there was once the intent to use an array for performance insted of a vector of voctors
 class Spiel {
     friend class Manager;
 public:
     /**
-     *  @brief Spiel Konstruktor und Destruktor
+     *  @brief Spiel constructor und destructor
      *
      **/
     explicit Spiel(quint8 x, quint8 y, stein startPlayer);
     ~Spiel();
 
 private:
-    quint8  	  _rundennummer =1;
-    stein   	  _currentPlayer;
-    std::vector<std::vector<stein>> _grid;
-    //stein[X_size][Y_size]   _grid = {zero};
-    const quint8  _x;
-    const quint8  _y;
-    quint8  	  _gewonnenSpieler1 =0;
-    quint8  	  _gewonnenSpieler2 =0;
+    int                              _rundennummer =1;     /*!< number of round that is currently played */
+    stein                            _currentPlayer;       /*!< flag to mark current player */
+    std::vector<std::vector<stein>>  _grid;                /*!< to represent the playing field */
+    const int                        _x;                   /*!< number of columms */
+    const int                        _y;                   /*!< number of rows */
+    int                              _gewonnenSpieler1 =0; /*!< counter for won games by player1 */
+    int                              _gewonnenSpieler2 =0; /*!< counter for won games by player2 */
 };
 
 
