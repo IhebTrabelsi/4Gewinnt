@@ -1,0 +1,1 @@
+for some reason qt didn't clean up properly
