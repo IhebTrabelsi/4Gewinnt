@@ -22,10 +22,7 @@ Manager::Manager(QWidget *parent)
 
 Manager::~Manager()
 {
-    //delete ui;
-    //delete _gameChat;
-    //delete _player1Chat;
-    //delete _player2Chat;
+    delete _spiel;
 }
 
 
