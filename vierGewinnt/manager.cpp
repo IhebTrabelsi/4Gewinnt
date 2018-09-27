@@ -329,6 +329,7 @@ void Manager::nextRound(bool change){
    if(_server == nullptr && _spiel->_currentPlayer == stein::Player1)beginnender = 0x01;
    _spiel->_rundennummer++;
    emit signalNextRound(0x02, _spiel->_rundennummer, beginnender);
+   resetGrid();
 }
 
 
@@ -361,4 +362,12 @@ void Manager::setNextRound(qint8 Cmd, qint8 Rundenummer, qint8 BeginnenderRunde)
     if(BeginnenderRunde && _serverOrClient)_spiel->_currentPlayer = stein::Player1;
     else _spiel->_currentPlayer = stein::Player2;
     _spiel->_rundennummer = Rundenummer;
+}
+
+void Manager::resetGrid(void){
+    for(int i=0; i< _spiel->_x ; i++){
+        for(int ii=0 ; ii< _spiel->_x; ii++){
+            _spiel->_grid[i][ii] = stein::zero;
+        }
+    }
 }

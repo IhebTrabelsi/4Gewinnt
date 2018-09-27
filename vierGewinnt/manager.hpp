@@ -150,6 +150,11 @@ public slots:
      **/
     void setNextRound(qint8 Cmd, qint8 Rundenummer, qint8 BeginnenderRunde);
 
+    /**
+     *  @brief resets playingfield
+     **/
+    void resetGrid(void);
+
 
 	
 
