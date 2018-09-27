@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->checkBox_2->setDisabled(true);
     ui->checkBox_3->setDisabled(true);
     ui->pushButton->setDisabled(true);
+    ui->_IP->setText("127.0.0.1");
 }
 
 MainWindow::~MainWindow()
@@ -62,7 +63,7 @@ void MainWindow::on_pushButton_clicked()
 
 }
 
-void MainWindow::createGrid(quint8 x, quint8 y, bool beginnender)
+void MainWindow::createGrid(quint8 x, quint8 y)
 {
     if (x == static_cast<quint8>(5))
     {

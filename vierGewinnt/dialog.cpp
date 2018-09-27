@@ -27,10 +27,7 @@ Dialog::Dialog(QWidget *parent, int GridCol, int GridRow ,bool flagbSet6 ,bool f
         nWidth, nHeight);
     else
         resize(nWidth, nHeight);
-    /*
-     * Hne 3malt Grid mta3 Pointers bech add mta3 stones ysir dynamically ( [][] = new Stone ...
-     *
-     */
+
     m_StartPointer = new Stone **[m_GridCol];
     for (int i=0 ; i<m_GridCol ;++i)
     {
@@ -42,8 +39,7 @@ Dialog::Dialog(QWidget *parent, int GridCol, int GridRow ,bool flagbSet6 ,bool f
     {
      _pushCnt_bSet[i]=1;
     }
-
-   // qDebug()<< m_GridCol <<"   "<< m_GridRow ;
+    ui->gewonnen->hide();
 }
 
 Dialog::~Dialog()
@@ -65,6 +61,20 @@ Dialog::~Dialog()
 
 
     delete ui;
+}
+
+void Dialog::gewonnen(QString code)
+{
+    ui->bSet1->setDisabled(true);
+    ui->bSet2->setDisabled(true);
+    ui->bSet3->setDisabled(true);
+    ui->bSet4->setDisabled(true);
+    ui->bSet5->setDisabled(true);
+    ui->bSet6->setDisabled(true);
+    ui->bSet7->setDisabled(true);
+    ui->gewonnen->setText(code);
+    ui->gewonnen->show();
+
 }
 
 void Dialog::addStoneInXYPos(QString playerName, int x_Pos, int y_Pos)
@@ -99,6 +109,7 @@ int Dialog::starPointX()
         return 404;
     if(m_GridCol==5)
         return 326;
+    return 0;
 }
 
 int Dialog::starPointY()
@@ -109,6 +120,7 @@ int Dialog::starPointY()
         return 400;
     if(m_GridCol==5)
         return 322;
+    return 0;
 }
 
 
@@ -178,11 +190,11 @@ void Dialog::addStone(int x)
     addStoneInXYPos(_NameHolder,m_GridCol-1-x,_pushCnt_bSet[x]-1);// Badalt el 6 bel 5 juste bech njarreb
     repaint(0,0,800,600);
     }
-    if(_pushCnt_bSet[x]<m_GridRow+1)
-    {
-        Stone* StoneTestPointer;
-        StoneTestPointer = accessStoneInXYPos(m_GridCol-1-x,_pushCnt_bSet[x]-1);
-     }
+//    if(_pushCnt_bSet[x]<m_GridRow+1)
+//    {
+//        Stone* StoneTestPointer;
+//        StoneTestPointer = accessStoneInXYPos(m_GridCol-1-x,_pushCnt_bSet[x]-1);
+//     }
     _pushCnt_bSet[x]++;
     m_Globalcnt++;
 

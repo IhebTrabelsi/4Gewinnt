@@ -48,7 +48,7 @@ public slots:
 
     void whenConnected();
 
-    void createGrid(quint8 x, quint8 y,bool beginnender);
+    void createGrid(quint8 x, quint8 y);
 
 
 public:

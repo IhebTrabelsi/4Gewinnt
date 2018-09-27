@@ -34,6 +34,7 @@ void Connector::gameConnects()
 qDebug() << "Game Connnnnects ------------------";
 connect(&_manager, &Manager::addStone, _mainWindow.Game, &Dialog::addStone);
 connect(_mainWindow.Game, &Dialog::sendZug, &_manager, &Manager::insertStein);
+connect(&_manager, &Manager::gewonnen, _mainWindow.Game, &Dialog::gewonnen);
 }
 // !!!!!!!put all the connects that need the server and client object here because you can't connect before the object is created
 void Connector::networkConnects(bool serverOrClient)

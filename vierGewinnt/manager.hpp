@@ -36,7 +36,6 @@ public:
 public slots:
 
 	void spielStart();
-    //void serverRequested(void); // not needed anymore check setSizeAndSend(quint8 x, quint8 y, quint8 rundenzahl)
     void handleEvent(quint8 code, quint8 value); 
 	void quit();
     void insertStein(quint8 x);
@@ -48,7 +47,7 @@ public slots:
     void nextRound(bool change);
 	void nextZug();
     //void setNextRound(quint8 Cmd, quint8 Rundenummer, quint8 BeginnenderRunde);
-    //-------------work for sure----------
+
     void setServerClient (bool serverOrClient ,quint16 port ,QString IP);
     void setSizeAndSend(quint8 x, quint8 y, quint8 rundenzahl);
     void clientReceived(quint8 xGridSize, quint8 yGridSize, quint8 Rundenzahl, quint8 Beginnender);
@@ -83,8 +82,8 @@ signals:
         void sendParameters(quint8, quint8, quint8, quint8, quint8, quint8);
         void networkConnects(bool);
         void gameChat(QString massage);
-        void createGrid(quint8, quint8, bool);
-
+        void createGrid(quint8, quint8);
+        void gewonnen(QString);
         //needs to be removed
         void networkServer(quint8, quint8,quint8);
         void networkClient(quint8, quint8,quint8);

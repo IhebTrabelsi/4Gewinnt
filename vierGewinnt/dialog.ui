@@ -160,6 +160,28 @@ border-radius:4px;
     </item>
    </layout>
   </widget>
+  <widget class="QLabel" name="gewonnen">
+   <property name="geometry">
+    <rect>
+     <x>552</x>
+     <y>210</y>
+     <width>221</width>
+     <height>59</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>MS Sans Serif</family>
+     <pointsize>15</pointsize>
+     <weight>75</weight>
+     <italic>true</italic>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Du hast gewonnen</string>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

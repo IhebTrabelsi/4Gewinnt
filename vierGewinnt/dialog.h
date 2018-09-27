@@ -35,15 +35,8 @@ public:
 
     //-------------- Global counter to distinguish number of player-----------------------
     int m_Globalcnt =0;
-    Stone* StoneTestPointer;
     Stone*** m_StartPointer; // array where every stone is called/stored
 
-    //Stone* m_ArrayOfPointersXpos[7];// this will be handled in constructor so it can be deleted after
-    //destroying it or( implement ) in destructor
-
-
-    // Creation mta3 Vector of pointers ysir fi mainwindow ki sayed yekhtar 9adech men cases yheb
-    // ama pour le moment lel test na3malha dima 7x7
     int _pushCnt_bSet[7];
 
 protected:
@@ -61,6 +54,7 @@ public slots:
     void on_bSet3_clicked();
     void on_bSet1_pressed();
     void addStone(int x);
+    void gewonnen(QString);
    // void on_pushButton_clicked();
 };
 

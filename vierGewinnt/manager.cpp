@@ -49,7 +49,7 @@ void Manager::setSizeAndSend(quint8 x, quint8 y, quint8 rundenzahl){
     if(_beginnender) val = static_cast<quint8>(0x00);
     else val = static_cast<quint8>(0x01);
     emit sendParameters(0x01, 0x04, _spalten, _zeilen, _rundenzahl, val);
-    emit createGrid(_spalten, _zeilen, _beginnender);
+    emit createGrid(_spalten, _zeilen);
     emit gameChat("GAME:  Ihre Grid- und Rundenauswahl würden and den gegner weiter gegeben");
 
 }
@@ -64,7 +64,7 @@ void Manager::clientReceived(quint8 xGridSize, quint8 yGridSize, quint8 Rundenza
     _spalten = xGridSize;
     _zeilen = yGridSize;
     _rundenzahl = Rundenzahl;
-    emit createGrid(_spalten, _zeilen, _beginnender);
+    emit createGrid(_spalten, _zeilen);
     _gridIsOn = true; // braucht man nur beim server
     emit sendParameters(0x10, 0x01, 0x00, 0x00, 0x00, 0x00);
 
@@ -142,8 +142,11 @@ void Manager::handleEvent(quint8 code, quint8 value){
             {
                 case static_cast<quint8>(0x00):
                     qDebug() << "OK";
+                    if(!_gameRunning)
+                    {
                     spielStart();
-                    emit gameChat("OK");
+                    emit gameChat("OK Start Game");
+                    }
                     //OK
                 break;
 
@@ -208,6 +211,7 @@ void Manager::insertStein(quint8 x){
         if(checkWin(x, y))
         {
             emit gameChat("GAME:  Du hast gewonnen!");
+            emit gewonnen("Du hast gewonnen");
             //nextRound(true);
         }
     }
@@ -247,11 +251,13 @@ void Manager::checkZug(int x){
         int y = setStein(x);
         if(checkDraw()){
             emit gameChat("GAME:  Unentschieden!");
+            emit gewonnen("Unentschieden");
             nextRound(false);
             emit sendParameters(0x11, 0x01 ,0x02, 0x00, 0x00, 0x00);
         }
         else if(checkWin(x ,y )){
             emit gameChat("GAME:  Du hast verlohren!");
+            emit gewonnen("Du hast verloren");
             _spiel->_gewonnenSpieler2 ++;
             emit sendParameters(0x11, 0x01, 0x01, 0x00, 0x00, 0x00);
         }
