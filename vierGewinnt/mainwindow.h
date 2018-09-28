@@ -5,6 +5,10 @@
 #include<QDebug>
 #include<QPixmap>
 #include<QListView>
+/**
+ * @file mainwindow.h Header file for MainWindow class
+ * @author Iheb Ben Said
+ **/
 
 namespace Ui {
 class MainWindow;

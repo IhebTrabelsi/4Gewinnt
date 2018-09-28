@@ -9,6 +9,12 @@
 #include <QDataStream>
 #include <iostream>
 
+/**
+ * @file mytcpserver.h Header file for Server class
+ * @author Chedi Fassi
+ **/
+
+
 class MyTcpServer : public QObject
 {
     Q_OBJECT

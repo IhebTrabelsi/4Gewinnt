@@ -6,6 +6,10 @@
 #include "mainwindow.h"
 
 
+/**
+ * @file connector.hpp Header file for Connector class
+ * @author Chedi Fassi
+ **/
 
 
 class Connector: public QObject {

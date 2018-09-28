@@ -115,6 +115,7 @@ void Manager::newRound()
     {
         gameChat("you have finished "+QString::number(_rundenzahlCurrent));
         resetGraphik();
+
     }
 
 }

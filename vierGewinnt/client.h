@@ -8,6 +8,11 @@
 #include <QDebug>
 #include <QString>
 
+/**
+ * @file client.h Header file for Client class
+ * @author Chedi Fassi
+ **/
+
 
 class Client : public QObject
 {

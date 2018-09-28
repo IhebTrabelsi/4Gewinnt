@@ -6,6 +6,10 @@
 // #include"manager.h"
 // enum class stein
 
+/**
+ * @file Stone.hpp Header file for Stone class
+ * @author Iheb Ben Said
+ **/
 
 
 class Stone

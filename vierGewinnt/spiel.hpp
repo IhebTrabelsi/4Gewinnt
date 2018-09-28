@@ -4,6 +4,12 @@
 #include <QtGlobal>
 #include <vector>
 
+/**
+ * @file spiel.hpp Header file for Spiel class
+ * @author Simon Näther
+ **/
+
+
 enum class stein : char { Player1 , Player2 , zero };
 
 /**

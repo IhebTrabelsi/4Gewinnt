@@ -7,6 +7,11 @@
 #include<vector>
 #include"stone.h"
 //#include<memory>
+/**
+ * @file dialog.h Header file for Dialog class
+ * @author Iheb Ben Said
+ **/
+
 namespace Ui {
 class Dialog;
 }
