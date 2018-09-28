@@ -53,6 +53,8 @@ void Client::disconnected() {
     connectToServer();
 }
 
+void Client::sendChat(quint8 Cmd, QString message);
+
 void Client::sendParameters(quint8 Cmd, quint8 length, quint8 var1, quint8 var2, quint8 var3, quint8 var4)
 {
     //emit sendMessage("SENT");

@@ -31,6 +31,7 @@ public slots:
     void connectToServer();
     //sends all Parameters either 1 , 2 or 4 parameters
     void sendParameters(quint8 Cmd, quint8 length, quint8 var1, quint8 var2=0, quint8 var3=0, quint8 var4=0);
+    void sendChat(quint8 Cmd, QString message);
     //disconnects from server (client tries to reconnect automatically)
     void disconnectFromServer();
 
