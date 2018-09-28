@@ -3,6 +3,10 @@ MyTcpServer::MyTcpServer(quint16 Port, QObject *parent) :
     QObject(parent), _Port(Port)
 {
 }
+MyTcpServer::~MyTcpServer()
+{
+    delete _mysocket;
+}
 void MyTcpServer::openServer()
 {
     _myserver = new QTcpServer(this);
@@ -133,7 +137,7 @@ void MyTcpServer::processRecievedInformation()
         case (static_cast<quint8>(0x02)):
             _mystream >> Rundenummer;
             _mystream >> BeginnenderRunde;
-            emit AntwortAufRundenbeginn(Cmd, Rundenummer, BeginnenderRunde);
+            emit AntwortAufRundenbeginn(Rundenummer, BeginnenderRunde);
             qDebug() << "Rundennummer: " << Rundenummer;
             qDebug() << "BeginnenderRunde: " << BeginnenderRunde;
             break;

@@ -57,4 +57,5 @@ SUBDIRS += \
 
 DISTFILES += \
     vierGewinnt.pro.user \
-    README.md
+    README.md \
+    background.png

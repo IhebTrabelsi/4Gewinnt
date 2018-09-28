@@ -126,10 +126,10 @@ border-radius:4px;
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
     <rect>
-     <x>654</x>
-     <y>65</y>
-     <width>131</width>
-     <height>141</height>
+     <x>560</x>
+     <y>80</y>
+     <width>221</width>
+     <height>61</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -145,10 +145,57 @@ border-radius:4px;
        </font>
       </property>
       <property name="text">
-       <string>Round</string>
+       <string>Runde:</string>
       </property>
      </widget>
     </item>
+   </layout>
+  </widget>
+  <widget class="QLabel" name="gewonnen">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>370</y>
+     <width>211</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>DejaVu Serif</family>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Du hast gewonnen
+</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="newRound">
+   <property name="geometry">
+    <rect>
+     <x>620</x>
+     <y>490</y>
+     <width>141</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>next Round</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>150</y>
+     <width>221</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QLCDNumber" name="lcdNumber">
       <property name="font">
@@ -158,15 +205,86 @@ border-radius:4px;
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="QLCDNumber" name="lcdNumber_2"/>
+    </item>
    </layout>
   </widget>
-  <widget class="QLabel" name="gewonnen">
+  <widget class="QWidget" name="horizontalLayoutWidget_2">
    <property name="geometry">
     <rect>
-     <x>552</x>
-     <y>210</y>
+     <x>560</x>
+     <y>290</y>
+     <width>219</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <widget class="QLCDNumber" name="punkteIch">
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLCDNumber" name="punkteGegner"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_3">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>260</y>
      <width>221</width>
-     <height>59</height>
+     <height>31</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <item>
+     <widget class="QLabel" name="label_2">
+      <property name="font">
+       <font>
+        <family>Source Code Pro</family>
+        <pointsize>15</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Ich</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_5">
+      <property name="font">
+       <font>
+        <family>Source Code Pro</family>
+        <pointsize>15</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Gegner</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>230</y>
+     <width>221</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
@@ -179,7 +297,7 @@ border-radius:4px;
     </font>
    </property>
    <property name="text">
-    <string>Du hast gewonnen</string>
+    <string>Punkte:</string>
    </property>
   </widget>
  </widget>

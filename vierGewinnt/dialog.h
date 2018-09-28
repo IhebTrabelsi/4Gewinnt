@@ -43,6 +43,7 @@ protected:
     void paintEvent(QPaintEvent *e);
 signals:
     void sendZug(quint8);
+    void nextRound();
 public slots:
 
     void on_bSet7_clicked();
@@ -55,7 +56,15 @@ public slots:
     void on_bSet1_pressed();
     void addStone(int x);
     void gewonnen(QString);
+    void setRunde(quint8 number);
+    void setRunde2(quint8 number);
+    void setPunkteIch(quint8 number);
+    void setPunkteGegner(quint8 number);
+    void disableNextRoundButton(bool yesNo);
+    void toggleNextButton(bool yesNo);
    // void on_pushButton_clicked();
+private slots:
+    void on_newRound_clicked();
 };
 
 #endif // DIALOG_H

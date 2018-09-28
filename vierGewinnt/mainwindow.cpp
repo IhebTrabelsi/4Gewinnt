@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "dialog.h"
-
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -20,7 +18,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->checkBox_2->setDisabled(true);
     ui->checkBox_3->setDisabled(true);
     ui->pushButton->setDisabled(true);
+    ui->pushButton_Connect->setDisabled(true);
     ui->_IP->setText("127.0.0.1");
+    //QPixmap pix(":/background.png");
+    //ui->MainWindow->setPixmap(pix);
+    //ui->MainWindow->setScaledContents(true);
+    //ui->MainWindow->setSizePolicy(QSizePolicy::Ignored,QSizePolicy::Expanding);
 }
 
 MainWindow::~MainWindow()
@@ -53,7 +56,7 @@ void MainWindow::on_pushButton_clicked()
        m_holderFlagbSet6 = true;
        m_holderFlagbSet7 = true;
     }
-    _rundenzahl = ui->_Port->text().toUShort();
+    _rundenzahl = ui->_Rundenzahl->text().toUShort();
     ui->checkBox->setDisabled(true);
     ui->checkBox_2->setDisabled(true);
     ui->checkBox_3->setDisabled(true);
@@ -88,6 +91,11 @@ void MainWindow::createGrid(quint8 x, quint8 y)
     Game->show();
     emit connectGame();
 
+}
+
+void MainWindow::newRound()
+{
+    Game->deleteLater();
 }
 
 void MainWindow::on_pushButton_Send_clicked()
@@ -145,6 +153,7 @@ void MainWindow::on_checkBox_clicked() //5
 
 void MainWindow::on_ButtonClient_clicked()
 {
+    ui->pushButton_Connect->setEnabled(true);
     ui->widget->show();
     _ServerOrClient = true;
     ui->ButtonClient->setDisabled(true);
@@ -154,6 +163,7 @@ void MainWindow::on_ButtonClient_clicked()
 
 void MainWindow::on_ButtonServer_clicked()
 {
+    ui->pushButton_Connect->setEnabled(true);
     ui->IP->hide();
     ui->_IP->hide();
     ui->widget->show();

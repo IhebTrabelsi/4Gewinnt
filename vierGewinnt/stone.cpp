@@ -71,27 +71,4 @@ int Stone::getXPosForDrawing()
     }
 }
 
-int Stone::getYPosForDrawing()
-{
-    /*
 
-        hne yomken ki nrakah el SCALING nwali nda5el les valeurs toul fel SWITCH
-
-    */
-
-    /*
-
-    switch (m_StoneYPos) {
-
-        case 6 :{return 0;break;}
-        case 5 :{return 1;break;}
-        case 4 :{return 2;break;}
-        case 3 :{return 3;break;}
-        case 2 :{return 4;break;}
-        case 1 :{return 5;break;}
-        case 0 :{return 6;break;}
-    default:qDebug()<<"out of scopeeeeee";
-
-
-    }*/
-}

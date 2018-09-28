@@ -25,10 +25,8 @@ private:
     stein   	  _currentPlayer;
     std::vector<std::vector<stein>> _grid;
     //stein[X_size][Y_size]   _grid = {zero};
-    const quint8  _x;
-    const quint8  _y;
-    quint8  	  _gewonnenSpieler1 =0;
-    quint8  	  _gewonnenSpieler2 =0;
+    quint8  _x;
+    quint8  _y;
 };
 
 

@@ -15,13 +15,13 @@ class MyTcpServer : public QObject
 public:
     //when you create a Client object give a Port
     MyTcpServer(quint16 Port, QObject *parent = nullptr);
-    
+    ~MyTcpServer();
 signals:
     void serverIsConnectedToClient();
     void AntwortAufZug(quint8 Cmd, quint8 Statuscode); // Antwort auf Zug OR recived Zug
     void AntwortAufAnfrage(quint8 Cmd, quint8 Statuscode); // Antwort auf anfrage
     /*not needed*/void AntwortAufSpielfeldParameter(quint8 Cmd, quint8 xGridSize, quint8 yGridSize, quint8 Rundenzahl, quint8 Beginnender); // Antwort auf spielfeld parameter
-    void AntwortAufRundenbeginn(quint8 Cmd, quint8 Rundenummer, quint8 BeginnenderRunde); //Antwort auf Rundenbeginn
+    void AntwortAufRundenbeginn(quint8 Rundenummer, quint8 BeginnenderRunde); //Antwort auf Rundenbeginn
     void Fehler(quint8 f);
     void sendMessage(QString message);
 public slots:

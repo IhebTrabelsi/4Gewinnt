@@ -6,6 +6,12 @@ Client::Client(QString Adress, quint16 Port, QObject *parent)
     _mystream.setByteOrder(QDataStream::BigEndian);
 }
 
+Client::~Client()
+{
+    delete _mysocket;
+}
+
+
 void Client::connectToServer()
 {
 
@@ -108,7 +114,7 @@ void Client::processRecievedInformation()
         case (static_cast<quint8>(0x02)):
             _mystream >> Rundenummer;
             _mystream >> BeginnenderRunde;
-            emit AntwortAufRundenbeginn(Cmd, Rundenummer, BeginnenderRunde);
+            emit AntwortAufRundenbeginn(Rundenummer, BeginnenderRunde);
             qDebug() << "Rundennummer: " << Rundenummer;
             qDebug() << "BeginnenderRunde: " << BeginnenderRunde;
             break;

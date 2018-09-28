@@ -26,7 +26,6 @@ public:
 //----------------- Special XPos and YPos FUNC for Drawing ---------------
 
     int getXPosForDrawing();
-    int getYPosForDrawing();
 
 private:
     QString m_Player   ;

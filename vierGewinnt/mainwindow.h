@@ -3,6 +3,8 @@
 #include<QMainWindow>
 #include<dialog.h>
 #include<QDebug>
+#include<QPixmap>
+#include<QListView>
 
 namespace Ui {
 class MainWindow;
@@ -49,6 +51,7 @@ public slots:
     void whenConnected();
 
     void createGrid(quint8 x, quint8 y);
+    void newRound();
 
 
 public:

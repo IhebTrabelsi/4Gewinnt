@@ -63,8 +63,43 @@ Dialog::~Dialog()
     delete ui;
 }
 
+void Dialog::disableNextRoundButton(bool yesNo)
+{
+    if(yesNo)
+    {
+        ui->newRound->setDisabled(true);
+        ui->newRound->hide();
+    }
+}
+
+void Dialog::toggleNextButton(bool yesNo)
+{
+      ui->newRound->setEnabled(yesNo);
+}
+
+void Dialog::setRunde(quint8 number)
+{
+   ui->lcdNumber->display(number);
+}
+void Dialog::setRunde2(quint8 number)
+{
+   ui->lcdNumber_2->display(number);
+}
+void Dialog::setPunkteIch(quint8 number)
+{
+   ui->punkteIch->display(number);
+}
+void Dialog::setPunkteGegner(quint8 number)
+{
+   ui->punkteGegner->display(number);
+}
+
 void Dialog::gewonnen(QString code)
 {
+    ui->gewonnen->setText(code);
+    ui->gewonnen->show();
+    if ((code == "Unentschieden") || (code == "Du hast gewonnen") || (code == "Du hast verloren"))
+    {
     ui->bSet1->setDisabled(true);
     ui->bSet2->setDisabled(true);
     ui->bSet3->setDisabled(true);
@@ -72,8 +107,7 @@ void Dialog::gewonnen(QString code)
     ui->bSet5->setDisabled(true);
     ui->bSet6->setDisabled(true);
     ui->bSet7->setDisabled(true);
-    ui->gewonnen->setText(code);
-    ui->gewonnen->show();
+    }
 
 }
 
@@ -251,3 +285,8 @@ void Dialog::on_bSet1_pressed()
 //{
 //    repaint(0,0,800,600);
 //}
+
+void Dialog::on_newRound_clicked()
+{
+    emit nextRound();
+}

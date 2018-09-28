@@ -44,20 +44,23 @@ public slots:
 	bool checkValid(quint8 x);
     bool checkWin(int x, int y);
 	bool checkDraw();
-    void nextRound(bool change);
 	void nextZug();
     //void setNextRound(quint8 Cmd, quint8 Rundenummer, quint8 BeginnenderRunde);
 
     void setServerClient (bool serverOrClient ,quint16 port ,QString IP);
     void setSizeAndSend(quint8 x, quint8 y, quint8 rundenzahl);
     void clientReceived(quint8 xGridSize, quint8 yGridSize, quint8 Rundenzahl, quint8 Beginnender);
-
+    //void StartRunde(quint8 Rundenummer, quint8 BeginnenderRunde);
+    void newRound();
 
 	
 public:
+        quint8  _PunkteZahlPlayer1=0;
+        quint8  _PunkteZahlPlayer2=0;
 		quint8  _zeilen =7;
 		quint8  _spalten = 7;
-		quint8  _rundenzahl = 3;
+        quint8  _rundenzahl = 1;
+        quint8 _rundenzahlCurrent = 0;
 		bool    _beginnender;
         bool    _serverOrClient; // 0x00 Server / 0x01 Client
         QString _IPadresse;
@@ -75,19 +78,24 @@ public:
 		
 signals:
         //signalClose();
-        void closeSignal();
-        void paint(quint8 x, quint8 y, stein spieler);
-        void signalNextRound(quint8, quint8, quint8);
 
         void sendParameters(quint8, quint8, quint8, quint8, quint8, quint8);
         void networkConnects(bool);
         void gameChat(QString massage);
         void createGrid(quint8, quint8);
         void gewonnen(QString);
+        void setRunde(quint8);
+        void setRunde2(quint8);
+        void setPunkteIch(quint8);
+        void setPunkteGegner(quint8);
+        void disableNextRoundButton(bool yesNo);
+        void toggleNextButton(bool yesNo);
         //needs to be removed
         void networkServer(quint8, quint8,quint8);
         void networkClient(quint8, quint8,quint8);
         void addStone(int);
+        void resetGraphik();
+
 };
 
 
