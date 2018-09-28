@@ -18,8 +18,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->checkBox_2->setDisabled(true);
     ui->checkBox_3->setDisabled(true);
     ui->pushButton->setDisabled(true);
+    ui->pushButton_Send->setDisabled(true);
     ui->pushButton_Connect->setDisabled(true);
     ui->_IP->setText("127.0.0.1");
+    ui->Chat->append("Please Choose Server Or Client than Connect");
     //QPixmap pix(":/background.png");
     //ui->MainWindow->setPixmap(pix);
     //ui->MainWindow->setScaledContents(true);
@@ -93,13 +95,27 @@ void MainWindow::createGrid(quint8 x, quint8 y)
 
 }
 
+void MainWindow::openChat()
+{
+    ui->pushButton_Send->setEnabled(true);
+}
+
+
 void MainWindow::newRound()
 {
     Game->deleteLater();
 }
 
+void MainWindow::receivechatGrafik(QString message)
+{
+    ui->Chat->append("Der Gegner Sagt: "+message);
+}
+
 void MainWindow::on_pushButton_Send_clicked()
 {
+    emit sendChatGrafik(ui->Message->text());
+    ui->Chat->append("Du Sagst: "+ui->Message->text());
+    ui->Message->clear();
 
 }
 

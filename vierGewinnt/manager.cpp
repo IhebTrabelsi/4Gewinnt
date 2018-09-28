@@ -62,6 +62,7 @@ void Manager::setSizeAndSend(quint8 x, quint8 y, quint8 rundenzahl){
     //qDebug << "R"
     emit createGrid(_spalten, _zeilen);
     emit gameChat("GAME:  Ihre Grid- und Rundenauswahl würden and den Gegner weiter gegeben");
+    emit openChat();
 
 }
 
@@ -83,6 +84,16 @@ void Manager::clientReceived(quint8 xGridSize, quint8 yGridSize, quint8 Rundenza
     emit disableNextRoundButton(true);
     emit toggleNextButton(false);
     spielStart();
+}
+
+void Manager::managerSendChat(QString message)
+{
+    emit sendChat(0x80, message);
+}
+
+void Manager::receiveChat(QString message)
+{
+    emit sendChatGrafik(message);
 }
 
 void Manager::newRound()

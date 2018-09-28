@@ -11,20 +11,62 @@
 class Stone
 {
 public:
+    /**
+     * @brief Stone
+     * @param Player
+     * @param x_position
+     * @param y_position
+     * @param Grid_Size
+     */
     Stone(QString Player ,int x_position ,int y_position ,int Grid_Size);
 
 //yomken ezouz hedhom menich bech nest7a9hom
+    /**
+     * @brief setStoneXPos
+     * @param x_position
+     */
     void setStoneXPos(int x_position);
+    /**
+     * @brief setStoneYPos
+     * @param y_position
+     */
     void setStoneYPos(int y_position);
+    /**
+     * @brief getStonePlayer
+     * @return
+     */
     QString getStonePlayer();
+    /**
+     * @brief getXPos
+     * @return
+     */
     int getXPos();
+    /**
+     * @brief getYPos
+     * @return
+     */
     int getYPos();
 //******************************************
+    /**
+     * @brief getStoneXPos
+     * @return
+     */
     int getStoneXPos();
+    /**
+     * @brief getStoneYPos
+     * @return
+     */
     int getStoneYPos();
+    /**
+     * @brief getPlayer
+     * @return
+     */
     QString getPlayer();
 //----------------- Special XPos and YPos FUNC for Drawing ---------------
-
+    /**
+     * @brief getXPosForDrawing
+     * @return
+     */
     int getXPosForDrawing();
 
 private:

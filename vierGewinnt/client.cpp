@@ -53,11 +53,17 @@ void Client::disconnected() {
     connectToServer();
 }
 
-void Client::sendChat(quint8 Cmd, QString message);
+void Client::sendChat(quint8 Cmd, QString message)
+{
+    _mystream << Cmd;
+    _mystream << message;
+
+}
 
 void Client::sendParameters(quint8 Cmd, quint8 length, quint8 var1, quint8 var2, quint8 var3, quint8 var4)
 {
     //emit sendMessage("SENT");
+
     _mystream << Cmd;
     _mystream << length;
     _mystream << var1;
@@ -89,7 +95,14 @@ void Client::processRecievedInformation()
     quint8 BeginnenderRunde;
     quint8 xCoordinate;
     quint8 Statuscode;
+    QString message;
     _mystream >> Cmd;
+    if (Cmd == static_cast<quint8>(0x80))
+    {
+       _mystream >> message;
+       emit AntwortChat(message);
+       return;
+    }
     _mystream >>  length;
     qint64 bytesAvailabe= _mysocket->bytesAvailable();
     qDebug() << "BytesAvailable" << bytesAvailabe;

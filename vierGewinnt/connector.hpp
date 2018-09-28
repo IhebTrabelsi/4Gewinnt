@@ -21,6 +21,11 @@ public:
 signals:
 
 public slots:
+    /**
+     * @brief networkConnects
+     * @param serverOrClient
+     * to connect all server/client connects when a network object is created
+     */
     void networkConnects(bool serverOrClient);
     void gameConnects();
 

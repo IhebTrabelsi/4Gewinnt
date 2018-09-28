@@ -97,6 +97,12 @@ void MyTcpServer::sendParameters(quint8 Cmd, quint8 length, quint8 var1, quint8 
     }
 }
 
+void MyTcpServer::sendChat(quint8 Cmd, QString message)
+{
+    _mystream << Cmd;
+    _mystream << message;
+}
+
 void MyTcpServer::processRecievedInformation()
 {
     //emit sendMessage("RECEIVED");
@@ -110,7 +116,14 @@ void MyTcpServer::processRecievedInformation()
     quint8 BeginnenderRunde;
     quint8 xCoordinate;
     quint8 Statuscode;
+    QString message;
     _mystream >> Cmd;
+    if (Cmd == static_cast<quint8>(0x80))
+    {
+       _mystream >> message;
+       emit AntwortChat(message);
+       return;
+    }
     _mystream >>  length;
     qint64 bytesAvailabe= _mysocket->bytesAvailable();
     qDebug() << "BytesAvailable" << bytesAvailabe;
